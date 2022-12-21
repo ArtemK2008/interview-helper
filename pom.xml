@@ -39,12 +39,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!--detail>
+
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
-        </detail-->
 
 		<dependency>
 			<groupId>com.h2database</groupId>
