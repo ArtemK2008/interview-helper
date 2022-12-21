@@ -8,6 +8,7 @@ public class InterviewHelperApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(InterviewHelperApplication.class, args);
+
   }
 
 }
