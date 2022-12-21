@@ -1,4 +1,4 @@
-package green_project.interview_helper;
+package com.project.green;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
