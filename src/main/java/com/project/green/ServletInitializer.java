@@ -1,4 +1,4 @@
-package green_project.interview_helper;
+package com.project.green;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -1,4 +1,4 @@
-package project.green.security;
+package com.project.green.security;
 
 public enum UserRole {
     USER,
