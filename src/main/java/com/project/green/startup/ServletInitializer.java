@@ -1,7 +1,9 @@
-package com.project.green;
+package com.project.green.startup;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
+import com.project.green.InterviewHelperApplication;
 
 public class ServletInitializer extends SpringBootServletInitializer {
 
