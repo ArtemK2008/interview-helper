@@ -14,20 +14,25 @@ import javax.persistence.SequenceGenerator;
 public class Answer {
 
   @Id
-  @Column(name = "answer_id")
+  @Column(name = "id")
   @SequenceGenerator(name = "answer_seq", sequenceName = "answer_sequence", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_seq")
   private int id;
+
   @Column(name = "voice_count")
   private int voiceCount;
+
   @Column(name = "answer")
   private String answerText;
+
+  @Column(name = "isDefault")
+  private boolean isDefault;
+
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "question_id")
   private Question question;
 
   public Answer() {
-    super();
   }
 
   public int getId() {
@@ -62,4 +67,11 @@ public class Answer {
     this.question = question;
   }
 
+  public boolean isDefault() {
+    return isDefault;
+  }
+
+  public void setDefault(boolean aDefault) {
+    isDefault = aDefault;
+  }
 }

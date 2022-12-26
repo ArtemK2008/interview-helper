@@ -20,23 +20,26 @@ import javax.persistence.SequenceGenerator;
 public class Question {
 
   @Id
-  @Column(name = "question_id")
+  @Column(name = "id")
   @SequenceGenerator(name = "question_seq", sequenceName = "question_sequence", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
   private int id;
+
   @Column(name = "question")
   private String questionText;
-  @Column(name = "answer")
-  private String bestAnswer;
+
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "topic_id")
   private Topic topic;
+
   @OneToMany(cascade = CascadeType.MERGE, mappedBy = "question")
   private Set<Answer> answers;
+
   @ManyToMany
-  @JoinTable(name = "Save_question_to_person", joinColumns = {
-      @JoinColumn(name = "question_id") }, inverseJoinColumns = {
-          @JoinColumn(name = "person_id") })
+  @JoinTable(name = "Person_to_question",
+          joinColumns = @JoinColumn(name = "question_id"),
+          inverseJoinColumns = @JoinColumn(name = "person_id")
+  )
   private List<Person> personsWhoSavedThis;
 
   public Question() {
@@ -57,14 +60,6 @@ public class Question {
 
   public void setQuestionText(String questionText) {
     this.questionText = questionText;
-  }
-
-  public String getBestAnswer() {
-    return bestAnswer;
-  }
-
-  public void setBestAnswer(String bestAnswer) {
-    this.bestAnswer = bestAnswer;
   }
 
   public Topic getTopic() {
