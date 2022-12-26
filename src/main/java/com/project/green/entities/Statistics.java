@@ -1,50 +1,49 @@
 package com.project.green.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
 public class Statistics {
 
   @Id
-  @Column(name = "statistics_id")
-  @SequenceGenerator(name = "statistics_seq", sequenceName = "statistics_sequence", initialValue = 1, allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statistics_seq")
-  private int id;
-  @Column(name = "count_of_correct_answers")
+  @Column(name = "person_id")
+  @GeneratedValue(generator = "gen")
+  @GenericGenerator(name = "gen", strategy = "foreign",
+          parameters=@Parameter(name = "property", value = "person"))
+  private int personId;
+
+  @Column(name = "answer_correct_count")
   private int countOfCorrectAnswers;
-  @Column(name = "count_of_wrong_answers")
+
+  @Column(name = "answer_wrong_count")
   private int countOfIncorrectAnswers;
-  @OneToOne(mappedBy = "statistics", cascade = CascadeType.ALL)
-  @JoinColumn(name = "person_id")
+
+  @OneToOne
+  @PrimaryKeyJoinColumn
   private Person person;
+
   @ManyToMany
-  @JoinTable(name = "Unanswered_question_to_statistics", joinColumns = {
-      @JoinColumn(name = "question_id") }, inverseJoinColumns = {
-          @JoinColumn(name = "statistics_id") })
+  @JoinTable(name = "Statistics_to_question",
+          joinColumns = @JoinColumn(name = "question_id"),
+          inverseJoinColumns = @JoinColumn(name = "statistics_id")
+  )
   private Set<Question> questionsAnsweredWrong;
 
   public Statistics() {
     super();
   }
 
-  public int getId() {
-    return id;
+  public int getPersonId() {
+    return personId;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setPersonId(int personId) {
+    this.personId = personId;
   }
 
   public int getCountOfCorrectAnswers() {
