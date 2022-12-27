@@ -10,7 +10,9 @@ public interface AnswerDAO {
 
     List<Answer> getAllAnswersToQuestion();
 
+    Answer getById(int id);
+
     void deleteAnswer(int id);
 
-    Answer saveAnswer(Answer answer);
+    void saveAnswer(Answer answer);
 }

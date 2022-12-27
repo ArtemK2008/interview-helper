@@ -21,7 +21,7 @@
 //  @Override
 //  protected void configure(HttpSecurity http) throws Exception {
 //    http.csrf().disable().authorizeRequests()
-//        .antMatchers("/login-form", "/registration").permitAll()
+//        .antMatchers("/login", "/registration").permitAll()
 //        .antMatchers("/**")
 //        .hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name()).and()
 //        .formLogin()

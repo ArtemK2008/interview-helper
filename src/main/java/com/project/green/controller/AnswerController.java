@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/answers")
 public class AnswerController {
 
-
     private AnswerService answerService;
 
     @Autowired
@@ -20,31 +19,35 @@ public class AnswerController {
     }
 
     @PostMapping
-    public Answer addNewAnswer(@RequestBody Answer answer) {
-        return answerService.saveAnswer(answer);
+    public void addNewAnswer(@RequestBody Answer answer) {
+        answerService.saveAnswer(answer);
     }
 
     @GetMapping
-    public List<Answer> getAllAnswersToQuestion(){
-
+    public List<Answer> getAllAnswers(){
         List<Answer> answers = answerService.getAllAnswersToQuestion();
-
         return answers;
+    }
+
+//    @GetMapping
+//    public List<Answer> getAllAnswersToQuestion(){
+//        return null;
+//    }
+
+    @GetMapping("/{id}")
+    public Answer getAnswer(@PathVariable int id){
+        return answerService.getById(id);
     }
 
     @PutMapping
     public Answer updateAnswer(@RequestBody Answer answer) {
-
         answerService.updateAnswer(answer);
-
         return answer;
     }
 
     @DeleteMapping("/{id}")
     public String deleteAnswer(@PathVariable int id) {
-
         answerService.deleteAnswer(id);
-
         return "Answer was deleted";
     }
 }

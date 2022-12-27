@@ -12,13 +12,18 @@ import java.util.List;
 @Service
 public class AnswerServiceImpl implements AnswerService {
 
-    @Autowired
+
     private AnswerDAO answerDAO;
+
+    @Autowired
+    public AnswerServiceImpl(AnswerDAO answerDAO) {
+        this.answerDAO = answerDAO;
+    }
 
     @Override
     @Transactional
-    public Answer saveAnswer(Answer answer) {
-        return answerDAO.saveAnswer(answer);
+    public void saveAnswer(Answer answer) {
+        answerDAO.saveAnswer(answer);
     }
 
     @Override
@@ -34,8 +39,9 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
+    @Transactional
     public Answer getById(int id) {
-        return null;
+        return answerDAO.getById(id);
     }
 
     @Override

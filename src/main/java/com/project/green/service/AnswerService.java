@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AnswerService {
 
-    Answer saveAnswer(Answer answer);
+    void saveAnswer(Answer answer);
 
     Answer updateAnswer(Answer answer);
 
