@@ -17,21 +17,31 @@ import javax.persistence.SequenceGenerator;
 public class Person {
 
   @Id
-  @Column(name = "person_id")
+  @Column(name = "id")
   @SequenceGenerator(name = "person_seq", sequenceName = "person_sequence", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
   private int id;
+
   @Column(name = "name")
   private String fullName;
+
   @Column(name = "email")
   private String email;
+
   @Column(name = "password")
   private String password;
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "statistics_id")
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy="person")
   private Statistics statistics;
+
   @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "personsWhoSavedThis")
   private Set<Question> savedQuestions;
+
+//  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+//  private Set<Role> roles;
+
+  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+  private Set<Topic> topics;
 
   public Person() {
     super();
@@ -85,4 +95,19 @@ public class Person {
     this.savedQuestions = savedQuestions;
   }
 
+//  public Set<Role> getRoles() {
+//    return roles;
+//  }
+//
+//  public void setRoles(Set<Role> roles) {
+//    this.roles = roles;
+//  }
+
+  public Set<Topic> getTopics() {
+    return topics;
+  }
+
+  public void setTopics(Set<Topic> topics) {
+    this.topics = topics;
+  }
 }
