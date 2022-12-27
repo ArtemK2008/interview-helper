@@ -1,3 +1,4 @@
+
 package com.project.green.entities;
 
 import javax.persistence.*;
