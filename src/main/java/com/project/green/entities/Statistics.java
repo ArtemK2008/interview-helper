@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Statistics {
 
   @Id
-  @Column(name = "person_id")
+  @Column(name = "statistics_person_id")
   @GeneratedValue(generator = "gen")
   @GenericGenerator(name = "gen", strategy = "foreign",
           parameters=@Parameter(name = "property", value = "person"))

@@ -37,8 +37,8 @@ public class Person {
   @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "personsWhoSavedThis")
   private Set<Question> savedQuestions;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
-  private Set<Role> roles;
+//  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+//  private Set<Role> roles;
 
   @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
   private Set<Topic> topics;
@@ -95,13 +95,13 @@ public class Person {
     this.savedQuestions = savedQuestions;
   }
 
-  public Set<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
+//  public Set<Role> getRoles() {
+//    return roles;
+//  }
+//
+//  public void setRoles(Set<Role> roles) {
+//    this.roles = roles;
+//  }
 
   public Set<Topic> getTopics() {
     return topics;
