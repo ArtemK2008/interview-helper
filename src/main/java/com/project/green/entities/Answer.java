@@ -15,7 +15,7 @@ public class Answer {
 
   @Id
   @Column(name = "id")
-  @SequenceGenerator(name = "answer_seq", sequenceName = "answer_sequence", initialValue = 1, allocationSize = 1)
+  @SequenceGenerator(name = "answer_seq", sequenceName = "answer_id_seq", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_seq")
   private int id;
 
@@ -25,7 +25,7 @@ public class Answer {
   @Column(name = "answer")
   private String answerText;
 
-  @Column(name = "isDefault")
+  @Column(name = "isdefault")
   private boolean isDefault;
 
   @ManyToOne(cascade = CascadeType.ALL)

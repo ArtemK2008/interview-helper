@@ -11,15 +11,17 @@ import java.util.List;
 @RequestMapping("/answers")
 public class AnswerController {
 
-    @Autowired
+
     private AnswerService answerService;
+
+    @Autowired
+    public AnswerController(AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @PostMapping
     public Answer addNewAnswer(@RequestBody Answer answer) {
-
-        answerService.saveAnswer(answer);
-
-        return answer;
+        return answerService.saveAnswer(answer);
     }
 
     @GetMapping

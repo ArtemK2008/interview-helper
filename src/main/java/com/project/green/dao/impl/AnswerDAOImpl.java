@@ -41,8 +41,8 @@ public class AnswerDAOImpl implements AnswerDAO {
     public void deleteAnswer(int id) {
         Session session = entityManager.unwrap(Session.class);
 
-        Query query = session.createQuery("delete from Answer where id=:answerId");
-        query.setParameter("answerId", id);
+        Query query = session.createQuery("delete from Answer where id=: id");
+        query.setParameter("id", id);
         query.executeUpdate();
     }
 
