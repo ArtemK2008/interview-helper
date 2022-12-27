@@ -9,7 +9,7 @@ public class Topic {
 
   @Id
   @Column(name = "id")
-  @SequenceGenerator(name = "topic_seq", sequenceName = "topic_sequence", initialValue = 1, allocationSize = 1)
+  @SequenceGenerator(name = "topic_seq", sequenceName = "topic_id_seq", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_seq")
   private int id;
 
