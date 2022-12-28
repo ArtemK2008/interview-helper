@@ -46,8 +46,7 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteAnswer(@PathVariable int id) {
+    public void deleteAnswer(@PathVariable int id) {
         answerService.deleteAnswer(id);
-        return "Answer was deleted";
     }
 }
