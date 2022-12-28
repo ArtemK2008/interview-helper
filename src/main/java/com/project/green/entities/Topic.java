@@ -1,8 +1,11 @@
 package com.project.green.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Topic {
@@ -13,9 +16,11 @@ public class Topic {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_seq")
   private int id;
 
+  @NotBlank
   @Column(name = "name")
   private String title;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "child_topic_id")
   private Topic childTopic;
@@ -23,9 +28,11 @@ public class Topic {
   @OneToMany(mappedBy = "childTopic")
   private Set<Topic> children;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
   private Set<Question> questions;
 
+  @JsonIgnore
   @ManyToMany
   @JoinTable(name = "Person_to_topic",
           joinColumns = @JoinColumn(name = "topic_id"),
@@ -83,5 +90,14 @@ public class Topic {
 
   public void setPeople(Set<Person> people) {
     this.people = people;
+  }
+
+  @Override
+  public String toString() {
+    return "Topic{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", children=" + children +
+            '}';
   }
 }
