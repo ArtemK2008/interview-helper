@@ -38,8 +38,9 @@ public class AnswerDAOImpl implements AnswerDAO {
     }
 
     @Override
-    public void saveAnswer(Answer answer) {
+    public Answer saveAnswer(Answer answer) {
         entityManager.persist(answer);
+        return answer;
     }
 
 }

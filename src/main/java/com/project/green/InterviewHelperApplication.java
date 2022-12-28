@@ -11,12 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class InterviewHelperApplication  {
 
-//  @Autowired
-//  DatabaseCleaner cleaner;
-//
-//  @Autowired
-//  StatisticsDaoImpl statisticsDao;
-
   public static void main(String[] args) {
     SpringApplication.run(InterviewHelperApplication.class, args);
   }

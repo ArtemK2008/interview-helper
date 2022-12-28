@@ -35,6 +35,14 @@ public class Answer {
   public Answer() {
   }
 
+  public Answer(int id, int voiceCount, String answerText, boolean isDefault, Question question) {
+    this.id = id;
+    this.voiceCount = voiceCount;
+    this.answerText = answerText;
+    this.isDefault = isDefault;
+    this.question = question;
+  }
+
   public int getId() {
     return id;
   }
