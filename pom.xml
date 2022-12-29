@@ -81,6 +81,10 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -90,7 +94,7 @@
 <!--			<artifactId>spring-security-test</artifactId>-->
 <!--			<scope>test</scope>-->
 <!--		</dependency>-->
-	</dependencies>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

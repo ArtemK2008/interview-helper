@@ -1,5 +1,7 @@
 package com.project.green.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +30,7 @@ public class Answer {
   @Column(name = "isdefault")
   private boolean isDefault;
 
+  @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "question_id")
   private Question question;
