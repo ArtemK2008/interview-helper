@@ -22,8 +22,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     @Transactional
-    public void saveAnswer(Answer answer) {
-        answerDAO.saveAnswer(answer);
+    public Answer saveAnswer(Answer answer) {
+        return answerDAO.saveAnswer(answer);
     }
 
     @Override

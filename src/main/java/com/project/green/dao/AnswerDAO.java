@@ -14,5 +14,5 @@ public interface AnswerDAO {
 
     void deleteAnswer(int id);
 
-    void saveAnswer(Answer answer);
+    Answer saveAnswer(Answer answer);
 }

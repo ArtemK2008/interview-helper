@@ -16,6 +16,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Override
     public void save(Question question) {
+
         entityManager.persist(question);
     }
 

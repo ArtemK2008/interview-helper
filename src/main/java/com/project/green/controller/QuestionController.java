@@ -28,8 +28,8 @@ public class QuestionController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/question")
-    public String save (QuestionDto questionDto){
+    @PostMapping("/questions")
+    public String save (@RequestBody QuestionDto questionDto){
         questionService.createQuestion(questionMapper.toQuestionEntity(questionDto));
         return "/question";
     }

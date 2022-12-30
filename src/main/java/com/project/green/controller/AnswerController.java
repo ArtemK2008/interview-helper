@@ -4,7 +4,6 @@ import com.project.green.entities.Answer;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -46,8 +45,7 @@ public class AnswerController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteAnswer(@PathVariable int id) {
+    public void deleteAnswer(@PathVariable int id) {
         answerService.deleteAnswer(id);
-        return "Answer was deleted";
     }
 }
