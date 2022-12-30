@@ -1,21 +1,13 @@
 package com.project.green.dto;
 
-import com.project.green.entities.Answer;
-import com.project.green.entities.Person;
-
-import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 public class QuestionDto {
 
     private int id;
     private String questionValue;
 
-    private TopicDto topicDto;
-
-    private Set<AnswerDto> answersDto;
-
-    private List<PersonDto> personsWhoSavedThis;
+    private int topicId;
 
     public QuestionDto() {
     }
@@ -35,4 +27,35 @@ public class QuestionDto {
     public void setQuestionValue(String questionValue) {
         this.questionValue = questionValue;
     }
+
+    public int getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(int topicId) {
+        this.topicId = topicId;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionDto{" +
+                "id=" + id +
+                ", questionValue='" + questionValue + '\'' +
+                ", topic_id=" + topicId +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionDto that = (QuestionDto) o;
+        return id == that.id && topicId == that.topicId && Objects.equals(questionValue, that.questionValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, questionValue, topicId);
+    }
+
 }

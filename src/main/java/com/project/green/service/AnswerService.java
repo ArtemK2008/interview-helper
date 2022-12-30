@@ -1,7 +1,6 @@
 package com.project.green.service;
 
 import com.project.green.entities.Answer;
-import com.project.green.entities.Question;
 
 import java.util.List;
 
@@ -16,4 +15,5 @@ public interface AnswerService {
     Answer getById(int id);
 
     List<Answer> getAllAnswersToQuestion();
+
 }

@@ -1,18 +1,18 @@
 package com.project.green.service;
 
-import com.project.green.entities.Topic;
+import com.project.green.dto.TopicDto;
 
 import java.util.List;
 
 public interface TopicService {
 
-    Topic getTopicById(int id);
+    TopicDto getTopicById(int id);
 
-    List<Topic> getAll();
+    List<TopicDto> getAll();
 
-    void save(Topic topic);
+    void save(TopicDto topicDto);
 
-    Topic update(Topic topic);
+    TopicDto update(TopicDto topicDto);
 
     void deleteById(int id);
 

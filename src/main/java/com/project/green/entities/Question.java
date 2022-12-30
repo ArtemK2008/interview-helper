@@ -28,7 +28,7 @@ public class Question {
   @Column(name = "question")
   private String questionText;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "topic_id")
   private Topic topic;
 

@@ -1,6 +1,6 @@
 package com.project.green.controller;
 
-import com.project.green.entities.Topic;
+import com.project.green.dto.TopicDto;
 import com.project.green.service.TopicService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,17 +34,17 @@ public class TopicControllerTest {
 
     @Test
     public void getAllTopics() throws Exception {
-        List<Topic> topics = new ArrayList<>();
-        Set<Topic> children = new HashSet<>();
-        Topic topic1 = new Topic();
+        List<TopicDto> topics = new ArrayList<>();
+        Set<TopicDto> children = new HashSet<>();
+        TopicDto topic1 = new TopicDto();
         topic1.setId(1);
         topic1.setTitle("Exceptions");
         children.add(topic1);
-        Topic topic2 = new Topic();
+        TopicDto topic2 = new TopicDto();
         topic2.setId(2);
         topic2.setTitle("Spring");
         topic2.setChildren(children);
-        Topic topic3 = new Topic();
+        TopicDto topic3 = new TopicDto();
         topic3.setId(3);
         topic3.setTitle("Core");
         topics.add(topic2);
@@ -73,12 +73,12 @@ public class TopicControllerTest {
 
     @Test
     public void getTopicById() throws Exception {
-        Set<Topic> children = new HashSet<>();
-        Topic topic1 = new Topic();
+        Set<TopicDto> children = new HashSet<>();
+        TopicDto topic1 = new TopicDto();
         topic1.setId(1);
         topic1.setTitle("Exceptions");
         children.add(topic1);
-        Topic topic2 = new Topic();
+        TopicDto topic2 = new TopicDto();
         topic2.setId(2);
         topic2.setTitle("Spring");
         topic2.setChildren(children);
@@ -86,8 +86,7 @@ public class TopicControllerTest {
         mockMvc.perform(get("/topic/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
-                                "  \"id\" : 2,\n" +
-                                "  \"title\" : \"Spring\"\n" +
+                                "  \"id\" : 2\n" +
                                 "}"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
@@ -105,24 +104,12 @@ public class TopicControllerTest {
 
     @Test
     public void create() throws Exception {
-        Set<Topic> children = new HashSet<>();
-        Topic topic1 = new Topic();
-        topic1.setId(1);
-        topic1.setTitle("Core");
-        children.add(topic1);
-        Topic topic2 = new Topic();
-        topic2.setId(2);
-        topic2.setTitle("Spring");
-        topic2.setChildren(children);
-        topicService.save(topic2);
         mockMvc.perform(post("/topic/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
-                                "  \"id\" : 2,\n" +
                                 "  \"title\" : \"Spring\",\n" +
                                 "  \"children\" : [\n" +
                                 "    {\n" +
-                                "      \"id\" : 1,\n" +
                                 "      \"title\" : \"Core\"\n" +
                                 "    }\n" +
                                 "  ]\n" +
@@ -132,10 +119,9 @@ public class TopicControllerTest {
 
     @Test
     public void update() throws Exception {
-        Topic topic1 = new Topic();
+        TopicDto topic1 = new TopicDto();
         topic1.setId(1);
         topic1.setTitle("Spring");
-        topicService.save(topic1);
         when(topicService.update(topic1)).thenReturn(topic1);
         mockMvc.perform(post("/topic/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -153,16 +139,6 @@ public class TopicControllerTest {
 
     @Test
     public void delete() throws Exception {
-        Set<Topic> children = new HashSet<>();
-        Topic topic1 = new Topic();
-        topic1.setId(1);
-        topic1.setTitle("Core");
-        children.add(topic1);
-        Topic topic2 = new Topic();
-        topic2.setId(2);
-        topic2.setTitle("Spring");
-        topic2.setChildren(children);
-        topicService.deleteById(topic2.getId());
         mockMvc.perform(post("/topic/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +

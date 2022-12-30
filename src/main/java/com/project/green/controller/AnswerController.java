@@ -2,36 +2,28 @@ package com.project.green.controller;
 
 import com.project.green.entities.Answer;
 import com.project.green.service.AnswerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/answers")
+@RequestMapping("api/answer")
+@Tag(name = "Answer Controller", description = "controller for operation by answer")
 public class AnswerController {
 
+    @Autowired
     private AnswerService answerService;
 
-    @Autowired
-    public AnswerController(AnswerService answerService) {
-        this.answerService = answerService;
-    }
-
-    @PostMapping
+    @PostMapping("/create")
     public void addNewAnswer(@RequestBody Answer answer) {
         answerService.saveAnswer(answer);
     }
 
-    @GetMapping
+    @GetMapping("all")
     public List<Answer> getAllAnswers(){
-        List<Answer> answers = answerService.getAllAnswersToQuestion();
-        return answers;
+        return answerService.getAllAnswersToQuestion();
     }
-
-//    @GetMapping
-//    public List<Answer> getAllAnswersToQuestion(){
-//        return null;
-//    }
 
     @GetMapping("/{id}")
     public Answer getAnswer(@PathVariable int id){
@@ -40,12 +32,12 @@ public class AnswerController {
 
     @PutMapping
     public Answer updateAnswer(@RequestBody Answer answer) {
-        answerService.updateAnswer(answer);
-        return answer;
+        return answerService.updateAnswer(answer);
     }
 
     @DeleteMapping("/{id}")
     public void deleteAnswer(@PathVariable int id) {
         answerService.deleteAnswer(id);
     }
+
 }

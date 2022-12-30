@@ -1,8 +1,9 @@
 package com.project.green.dao;
 
+import com.project.green.dto.CountQuestionDto;
 import com.project.green.entities.Question;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface QuestionDao {
 
@@ -14,5 +15,10 @@ public interface QuestionDao {
 
     Question getById(int id);
 
-    Collection<Question> getAll();
+    List<Question> getAll();
+
+    List<Question> getAllByTopicId(int id);
+
+    List<CountQuestionDto> countQuestionByTopic();
+
 }

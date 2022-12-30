@@ -1,32 +1,26 @@
 package com.project.green.controller;
 
-import com.project.green.entities.Topic;
+import com.project.green.dto.TopicDto;
 import com.project.green.service.TopicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/topic")
+@RequestMapping("/api/topic")
 @Tag(name = "Topic Controller", description = "controller for operation by topic")
 public class TopicController {
 
-    private final TopicService service;
-
     @Autowired
-    public TopicController(TopicService service) {
-        this.service = service;
-    }
+    private TopicService topicService;
 
     @Operation(summary = "Get all topics endpoint")
     @GetMapping("/all")
-    public ResponseEntity<List<Topic>> getAllTopics() {
-        List<Topic> topics = service.getAll();
-        return ResponseEntity.ok(topics);
+    public List<TopicDto> getAllTopics() {
+        return topicService.getAll();
     }
 
     @Operation(
@@ -34,9 +28,8 @@ public class TopicController {
             description = "Client sends information in JSON to get topic."
     )
     @GetMapping("/{id}")
-    public ResponseEntity<Topic> getTopicById(@PathVariable("id") int id) {
-        Topic topic = service.getTopicById(id);
-        return ResponseEntity.ok(topic);
+    public TopicDto getTopicById(@PathVariable("id") int id) {
+        return topicService.getTopicById(id);
     }
 
     @Operation(
@@ -45,9 +38,8 @@ public class TopicController {
                     "Name have to be filled"
     )
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody @Valid Topic topic) {
-        service.save(topic);
-        return ResponseEntity.ok().build();
+    public void create(@RequestBody @Valid TopicDto topicDto) {
+        topicService.save(topicDto);
     }
 
     @Operation(
@@ -56,9 +48,8 @@ public class TopicController {
                     "Name have to be filled"
     )
     @PostMapping("/update")
-    public ResponseEntity<Topic> update(@RequestBody @Valid Topic topic) {
-        service.update(topic);
-        return ResponseEntity.ok(topic);
+    public TopicDto update(@RequestBody @Valid TopicDto topicDto) {
+        return topicService.update(topicDto);
     }
 
     @Operation(
@@ -66,9 +57,8 @@ public class TopicController {
             description = "Client sends information in JSON to delete topic."
     )
     @PostMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody @Valid Topic topic) {
-        service.deleteById(topic.getId());
-        return ResponseEntity.ok().build();
+    public void delete(@RequestBody @Valid TopicDto topicDto) {
+        topicService.deleteById(topicDto.getId());
     }
 
 }

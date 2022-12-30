@@ -1,17 +1,13 @@
 package com.project.green.dto;
 
-import com.project.green.entities.Person;
-import com.project.green.entities.Topic;
-
+import java.util.Objects;
 import java.util.Set;
 
 public class TopicDto {
 
     private int id;
     private String title;
-    private Topic childTopic;
-    private Set<Topic> children;
-    private Set<Person> people;
+    private Set<TopicDto> children;
 
     public TopicDto() {
     }
@@ -32,27 +28,35 @@ public class TopicDto {
         this.title = title;
     }
 
-    public Topic getChildTopic() {
-        return childTopic;
-    }
 
-    public void setChildTopic(Topic childTopic) {
-        this.childTopic = childTopic;
-    }
-
-    public Set<Topic> getChildren() {
+    public Set<TopicDto> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Topic> children) {
+    public void setChildren(Set<TopicDto> children) {
         this.children = children;
     }
 
-    public Set<Person> getPeople() {
-        return people;
+    @Override
+    public String toString() {
+        return "TopicDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", children=" + children +
+                '}';
     }
 
-    public void setPeople(Set<Person> people) {
-        this.people = people;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TopicDto topicDto = (TopicDto) o;
+        return id == topicDto.id && Objects.equals(title, topicDto.title) && Objects.equals(children, topicDto.children);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, children);
+    }
+
 }
