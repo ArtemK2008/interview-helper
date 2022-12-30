@@ -4,7 +4,6 @@ import com.project.green.entities.Answer;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

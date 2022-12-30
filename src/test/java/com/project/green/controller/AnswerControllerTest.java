@@ -75,6 +75,7 @@ public class AnswerControllerTest {
     @Test
     public void deleteAnswer() throws Exception {
         Answer answer = new Answer(1, 3, "Answer Text Example", true, new Question());
+        answerService.deleteAnswer(answer.getId());
         mockMvc.perform(delete("/answers/1"))
                 .andExpect(status().isOk());
     }
