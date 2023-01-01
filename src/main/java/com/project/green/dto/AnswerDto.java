@@ -2,8 +2,6 @@ package com.project.green.dto;
 
 import com.project.green.entities.Question;
 
-import java.util.Objects;
-
 public class AnswerDto {
 
     private int id;
@@ -13,6 +11,14 @@ public class AnswerDto {
     private Question question;
 
     public AnswerDto() {
+    }
+
+    public AnswerDto(int id, int voiceCount, String answerText, boolean isDefault, Question question) {
+        this.id = id;
+        this.voiceCount = voiceCount;
+        this.answerText = answerText;
+        this.isDefault = isDefault;
+        this.question = question;
     }
 
     public int getId() {
