@@ -7,6 +7,7 @@ import java.util.Objects;
 public class AnswerDto {
 
     private int id;
+    private int voiceCount;
     private String answerText;
     private boolean isDefault;
     private Question question;
@@ -46,27 +47,12 @@ public class AnswerDto {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "AnswerDto{" +
-                "id=" + id +
-                ", answerText='" + answerText + '\'' +
-                ", isDefault=" + isDefault +
-                ", question=" + question +
-                '}';
+    public int getVoiceCount() {
+        return voiceCount;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AnswerDto answerDto = (AnswerDto) o;
-        return id == answerDto.id && isDefault == answerDto.isDefault && Objects.equals(answerText, answerDto.answerText) && Objects.equals(question, answerDto.question);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, answerText, isDefault, question);
+    public void setVoiceCount(int voiceCount) {
+        this.voiceCount = voiceCount;
     }
 
 }
