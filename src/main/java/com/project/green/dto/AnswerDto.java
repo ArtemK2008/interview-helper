@@ -1,24 +1,22 @@
 package com.project.green.dto;
 
-import com.project.green.entities.Question;
-
 public class AnswerDto {
 
     private int id;
     private int voiceCount;
     private String answerText;
     private boolean isDefault;
-    private Question question;
+    private int questionId;
 
     public AnswerDto() {
     }
 
-    public AnswerDto(int id, int voiceCount, String answerText, boolean isDefault, Question question) {
+    public AnswerDto(int id, int voiceCount, String answerText, boolean isDefault, int questionId) {
         this.id = id;
         this.voiceCount = voiceCount;
         this.answerText = answerText;
         this.isDefault = isDefault;
-        this.question = question;
+        this.questionId = questionId;
     }
 
     public int getId() {
@@ -45,14 +43,6 @@ public class AnswerDto {
         isDefault = aDefault;
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
     public int getVoiceCount() {
         return voiceCount;
     }
@@ -61,4 +51,11 @@ public class AnswerDto {
         this.voiceCount = voiceCount;
     }
 
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
 }
