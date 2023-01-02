@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+</head>
+<body>
+<h1>Hello, pls enter your login</h1>
+
+<form method="POST" th:action="@{/index}">
+<input type="text" th:name="idFromIndex" value="Enter your id" />
+<input type="submit" value="login" />
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

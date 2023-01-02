@@ -8,6 +8,8 @@ public interface TopicService {
 
     TopicDto getTopicById(int id);
 
+     TopicDto getTopicByTitle(String title);
+
     List<TopicDto> getAll();
 
     void save(TopicDto topicDto);

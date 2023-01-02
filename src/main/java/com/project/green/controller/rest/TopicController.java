@@ -1,4 +1,4 @@
-package com.project.green.controller;
+package com.project.green.controller.rest;
 
 import com.project.green.dto.TopicDto;
 import com.project.green.service.TopicService;

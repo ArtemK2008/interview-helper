@@ -20,6 +20,12 @@ public class TopicDaoImpl implements TopicDao {
         return entityManager.createQuery("select t from Topic as t", Topic.class).getResultList();
     }
 
+    public Optional<Topic> getByTitle(String title) {
+        return Optional.of(entityManager.createQuery("select t from Topic t where t.title=:title", Topic.class).
+                setParameter("title", title).
+                getSingleResult());
+    }
+
     @Override
     public Optional<Topic> getTopicById(int id) {
         return Optional.of(entityManager.createQuery("select t from Topic t where t.id=:id", Topic.class).
