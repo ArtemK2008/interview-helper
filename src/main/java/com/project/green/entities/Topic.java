@@ -1,6 +1,17 @@
 package com.project.green.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,9 +27,10 @@ public class Topic {
     @Column(name = "name")
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "child_topic_id")
     private Topic childTopic;
+
 
     @OneToMany(mappedBy = "childTopic")
     private Set<Topic> children;
@@ -30,7 +42,16 @@ public class Topic {
     private Set<Person> people;
 
     public Topic() {
-        super();
+    }
+
+    public Topic(int id, String title, Topic childTopic, Set<Topic> children, Set<Question> questions,
+                 Set<Person> people) {
+        this.id = id;
+        this.title = title;
+        this.childTopic = childTopic;
+        this.children = children;
+        this.questions = questions;
+        this.people = people;
     }
 
     public int getId() {

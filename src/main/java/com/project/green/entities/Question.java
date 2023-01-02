@@ -1,6 +1,7 @@
 package com.project.green.entities;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,71 +20,101 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Question {
 
-  @Id
-  @Column(name = "id")
-  @SequenceGenerator(name = "question_seq", sequenceName = "question_id_seq", initialValue = 1, allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
-  private int id;
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "question_seq", sequenceName = "question_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
+    private int id;
 
-  @Column(name = "question")
-  private String questionText;
+    @Column(name = "question")
+    private String questionText;
 
-  @ManyToOne
-  @JoinColumn(name = "topic_id")
-  private Topic topic;
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
 
-  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "question")
-  private Set<Answer> answers;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "question")
+    private Set<Answer> answers;
 
-  @ManyToMany
-  @JoinTable(name = "Person_to_question",
-          joinColumns = @JoinColumn(name = "question_id"),
-          inverseJoinColumns = @JoinColumn(name = "person_id")
-  )
-  private List<Person> personsWhoSavedThis;
+    @ManyToMany
+    @JoinTable(name = "Person_to_question",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id")
+    )
+    private List<Person> personsWhoSavedThis;
 
-  public Question() {
-    super();
-  }
+    public Question() {
+    }
 
-  public int getId() {
-    return id;
-  }
+    public Question(int id, String questionText, Topic topic, Set<Answer> answers, List<Person> personsWhoSavedThis) {
+        this.id = id;
+        this.questionText = questionText;
+        this.topic = topic;
+        this.answers = answers;
+        this.personsWhoSavedThis = personsWhoSavedThis;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public String getQuestionText() {
-    return questionText;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public void setQuestionText(String questionText) {
-    this.questionText = questionText;
-  }
+    public String getQuestionText() {
+        return questionText;
+    }
 
-  public Topic getTopic() {
-    return topic;
-  }
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
 
-  public void setTopic(Topic topic) {
-    this.topic = topic;
-  }
+    public Topic getTopic() {
+        return topic;
+    }
 
-  public Set<Answer> getAnswers() {
-    return answers;
-  }
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
 
-  public void setAnswers(Set<Answer> answers) {
-    this.answers = answers;
-  }
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
 
-  public List<Person> getPersonsWhoSavedThis() {
-    return personsWhoSavedThis;
-  }
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
+    }
 
-  public void setPersonsWhoSavedThis(List<Person> personsWhoSavedThis) {
-    this.personsWhoSavedThis = personsWhoSavedThis;
-  }
+    public List<Person> getPersonsWhoSavedThis() {
+        return personsWhoSavedThis;
+    }
 
+    public void setPersonsWhoSavedThis(List<Person> personsWhoSavedThis) {
+        this.personsWhoSavedThis = personsWhoSavedThis;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", questionText='" + questionText + '\'' +
+                ", topic=" + topic +
+                ", answers=" + answers +
+                ", personsWhoSavedThis=" + personsWhoSavedThis +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return id == question.id && Objects.equals(questionText, question.questionText) && Objects.equals(topic, question.topic) && Objects.equals(answers, question.answers) && Objects.equals(personsWhoSavedThis, question.personsWhoSavedThis);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, questionText, topic, answers, personsWhoSavedThis);
+    }
 }

@@ -1,19 +1,20 @@
 package com.project.green.service;
 
+import com.project.green.dto.AnswerDto;
 import com.project.green.entities.Answer;
 
 import java.util.List;
 
 public interface AnswerService {
 
-    Answer saveAnswer(Answer answer);
+    AnswerDto saveAnswer(AnswerDto answerDto);
 
-    Answer updateAnswer(Answer answer);
+    AnswerDto updateAnswer(AnswerDto answerDto);
 
     void deleteAnswer(int id);
 
-    Answer getById(int id);
+    AnswerDto getById(int id);
 
-    List<Answer> getAllAnswersToQuestion();
+    List<AnswerDto> getAllAnswersToQuestion();
 
 }
