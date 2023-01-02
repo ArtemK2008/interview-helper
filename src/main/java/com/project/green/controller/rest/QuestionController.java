@@ -20,22 +20,22 @@ public class QuestionController {
 
     @GetMapping("/all")
     public List<QuestionDto> findAll() {
-        return questionService.findAll();
+        return questionService.getAll();
     }
 
     @GetMapping("/{id}")
     public QuestionDto getQuestionById(@PathVariable("id") int id) {
-        return questionService.findById(id);
+        return questionService.getById(id);
     }
 
     @PostMapping("/create")
     public void create(@RequestBody @Valid QuestionDto questionDto) {
-        questionService.createQuestion(questionDto);
+        questionService.save(questionDto);
     }
 
     @PostMapping("/update")
     public QuestionDto update(@RequestBody @Valid QuestionDto questionDto) {
-        return questionService.updateQuestions(questionDto);
+        return questionService.update(questionDto);
     }
 
     @PostMapping("/delete")

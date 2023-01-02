@@ -22,7 +22,7 @@ public class TopicServiceImpl implements TopicService {
     private TopicMapper mapper;
 
     @Override
-    public TopicDto getTopicById(int id) {
+    public TopicDto getById(int id) {
         return mapper.toTopicDto(topicDao.getTopicById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found.")));
     }
 

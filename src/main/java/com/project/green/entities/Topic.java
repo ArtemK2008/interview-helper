@@ -1,6 +1,17 @@
 package com.project.green.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,9 +27,10 @@ public class Topic {
     @Column(name = "name")
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "child_topic_id")
     private Topic childTopic;
+
 
     @OneToMany(mappedBy = "childTopic")
     private Set<Topic> children;
@@ -26,15 +38,20 @@ public class Topic {
     @OneToMany(mappedBy = "topic")
     private Set<Question> questions;
 
-    @ManyToMany
-    @JoinTable(name = "Person_to_topic",
-            joinColumns = @JoinColumn(name = "topic_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-    )
+    @ManyToMany(mappedBy = "topics")
     private Set<Person> people;
 
     public Topic() {
-        super();
+    }
+
+    public Topic(int id, String title, Topic childTopic, Set<Topic> children, Set<Question> questions,
+                 Set<Person> people) {
+        this.id = id;
+        this.title = title;
+        this.childTopic = childTopic;
+        this.children = children;
+        this.questions = questions;
+        this.people = people;
     }
 
     public int getId() {
@@ -99,12 +116,11 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(childTopic, topic.childTopic) && Objects.equals(children, topic.children) && Objects.equals(questions, topic.questions) && Objects.equals(people, topic.people);
+        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(children, topic.children);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, childTopic, children, questions, people);
+        return Objects.hash(id, title, children);
     }
-
 }

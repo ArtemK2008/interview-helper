@@ -1,5 +1,6 @@
 package com.project.green.controller.rest;
 
+import com.project.green.dto.AnswerDto;
 import com.project.green.entities.Answer;
 import com.project.green.service.AnswerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,23 +17,23 @@ public class AnswerController {
     private AnswerService answerService;
 
     @PostMapping("/create")
-    public void addNewAnswer(@RequestBody Answer answer) {
-        answerService.saveAnswer(answer);
+    public void addNewAnswer(@RequestBody AnswerDto answerDto) {
+        answerService.saveAnswer(answerDto);
     }
 
-    @GetMapping("all")
-    public List<Answer> getAllAnswers(){
+    @GetMapping("/all")
+    public List<AnswerDto> getAllAnswers(){
         return answerService.getAllAnswersToQuestion();
     }
 
     @GetMapping("/{id}")
-    public Answer getAnswer(@PathVariable int id){
+    public AnswerDto getAnswer(@PathVariable int id){
         return answerService.getById(id);
     }
 
     @PutMapping
-    public Answer updateAnswer(@RequestBody Answer answer) {
-        return answerService.updateAnswer(answer);
+    public AnswerDto updateAnswer(@RequestBody AnswerDto answerDto) {
+        return answerService.updateAnswer(answerDto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,13 +1,16 @@
 package com.project.green.service.impl;
 
 import com.project.green.dao.AnswerDAO;
+import com.project.green.dto.AnswerDto;
 import com.project.green.entities.Answer;
+import com.project.green.mapper.AnswerMapper;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
@@ -15,16 +18,25 @@ public class AnswerServiceImpl implements AnswerService {
     @Autowired
     private AnswerDAO answerDAO;
 
+    @Autowired
+    private AnswerMapper answerMapper;
+
     @Override
     @Transactional
-    public Answer saveAnswer(Answer answer) {
-        return answerDAO.saveAnswer(answer);
+    public AnswerDto saveAnswer(AnswerDto answerDto) {
+        if (answerDto == null) {
+            throw new IllegalArgumentException("Answer is null");
+        }
+        return answerMapper.toAnswerDto(answerDAO.saveAnswer(answerMapper.toAnswer(answerDto)));
     }
 
     @Override
     @Transactional
-    public Answer updateAnswer(Answer answer) {
-        return answerDAO.updateAnswer(answer);
+    public AnswerDto updateAnswer(AnswerDto answerDto) {
+        if (answerDto == null) {
+            throw new IllegalArgumentException("Answer is null");
+        }
+        return answerMapper.toAnswerDto(answerDAO.updateAnswer(answerMapper.toAnswer(answerDto)));
     }
 
     @Override
@@ -34,12 +46,12 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer getById(int id) {
-        return answerDAO.getById(id);
+    public AnswerDto getById(int id) {
+        return answerMapper.toAnswerDto(answerDAO.getById(id));
     }
 
     @Override
-    public List<Answer> getAllAnswersToQuestion() {
-        return answerDAO.getAllAnswersToQuestion();
+    public List<AnswerDto> getAllAnswersToQuestion() {
+        return answerDAO.getAllAnswersToQuestion().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
 }

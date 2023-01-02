@@ -23,7 +23,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public void createQuestion(QuestionDto questionDto) {
+    public void save(QuestionDto questionDto) {
         if (questionDto == null) {
             throw new IllegalArgumentException("Question is null");
         }
@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public QuestionDto updateQuestions(QuestionDto questionDto) {
+    public QuestionDto update(QuestionDto questionDto) {
         if (questionDto == null) {
             throw new IllegalArgumentException("Question is null");
         }
@@ -40,12 +40,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDto> findAll() {
+    public List<QuestionDto> getAll() {
         return questionDao.getAll().stream().map(questionMapper::toQuestionDto).collect(Collectors.toList());
     }
 
     @Override
-    public QuestionDto findById(int id) {
+    public QuestionDto getById(int id) {
         return questionMapper.toQuestionDto(questionDao.getById(id));
     }
 

@@ -1,10 +1,11 @@
-
 package com.project.green.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
@@ -24,6 +25,12 @@ public class Role {
     Set<Person> people;
 
     public Role() {
+    }
+
+    public Role(int id, String position, Set<Person> people) {
+        this.id = id;
+        this.position = position;
+        this.people = people;
     }
 
     public int getId() {
@@ -48,5 +55,26 @@ public class Role {
 
     public void setPeople(Set<Person> people) {
         this.people = people;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", position='" + position + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return id == role.id && Objects.equals(position, role.position) && Objects.equals(people, role.people);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, position, people);
     }
 }

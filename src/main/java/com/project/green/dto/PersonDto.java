@@ -11,9 +11,10 @@ public class PersonDto {
     private int id;
     private String fullName;
     private String email;
-    private Statistics statistics;
-    private Set<Role> roles;
-    private Set<Topic> topics;
+    private String password;
+    private int statisticsId;
+
+    private Set<TopicDto> topics;
 
     public PersonDto() {
     }
@@ -42,27 +43,27 @@ public class PersonDto {
         this.email = email;
     }
 
-    public Statistics getStatistics() {
-        return statistics;
+    public String getPassword() {
+        return password;
     }
 
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public int getStatisticsId() {
+        return statisticsId;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setStatisticsId(int statisticsId) {
+        this.statisticsId = statisticsId;
     }
 
-    public Set<Topic> getTopics() {
+    public Set<TopicDto> getTopics() {
         return topics;
     }
 
-    public void setTopics(Set<Topic> topics) {
+    public void setTopics(Set<TopicDto> topics) {
         this.topics = topics;
     }
 }
