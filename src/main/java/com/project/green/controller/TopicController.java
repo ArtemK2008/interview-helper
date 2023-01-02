@@ -29,7 +29,7 @@ public class TopicController {
     )
     @GetMapping("/{id}")
     public TopicDto getTopicById(@PathVariable("id") int id) {
-        return topicService.getTopicById(id);
+        return topicService.getById(id);
     }
 
     @Operation(

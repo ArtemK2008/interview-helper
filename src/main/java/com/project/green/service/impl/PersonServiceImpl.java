@@ -1,49 +1,61 @@
 package com.project.green.service.impl;
 
+import com.project.green.dao.PersonDao;
+import com.project.green.dao.TopicDao;
+import com.project.green.dto.PersonDto;
 import com.project.green.entities.Person;
-import com.project.green.exeption.NotFoundValueException;
-import com.project.green.repository.impl.PersonRepository;
+import com.project.green.entities.Topic;
+import com.project.green.exception.NotFoundValueException;
+import com.project.green.mapper.PersonMapper;
 import com.project.green.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private final PersonRepository personRepository;
+    @Autowired
+    private PersonDao personDao;
 
-    public PersonServiceImpl(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    @Autowired
+    private TopicDao topicDao;
+
+    @Autowired
+    private PersonMapper mapper;
+
+    @Transactional
+    @Override
+    public void save(PersonDto personDto) {
+        Person person = mapper.toPerson(personDto);
+        personDao.save(person);
     }
 
     @Override
-    public Person save(Person person) {
-        return personRepository.save(person);
+    public List<PersonDto> getAll() {
+        return personDao.findAll().stream().map(mapper::toPersonDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<Person> findAll() {
-        return personRepository.findAll();
+    public PersonDto getById(int id) {
+        return mapper.toPersonDto(personDao.getPersonById(id).
+                orElseThrow(() -> new NotFoundValueException(Person.class, "id", id)));
     }
 
+    @Transactional
     @Override
-    public Person findById(int id) {
-        return personRepository.findById(id).
-                orElseThrow(() -> new NotFoundValueException(Person.class, "id", id));
+    public PersonDto update(PersonDto personDto) {
+        return mapper.toPersonDto(personDao.update(mapper.toPerson(personDto)));
     }
 
+    @Transactional
     @Override
-    public Person update(Person person) {
-        int id = person.getId();
-        findById(id);
-        return save(person);
-    }
-
-    @Override
-    public Person delete(int id) {
-        Person person = findById(id);
-        personRepository.deleteById(id);
-        return person;
+    public void deleteById(int id) {
+        personDao.deleteById(id);
     }
 }

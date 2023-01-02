@@ -2,16 +2,7 @@ package com.project.green.entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
 public class Person {
@@ -31,16 +22,20 @@ public class Person {
   @Column(name = "password")
   private String password;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy="person")
+  @OneToOne(mappedBy="person")
   private Statistics statistics;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "personsWhoSavedThis")
+  @ManyToMany(mappedBy = "personsWhoSavedThis")
   private Set<Question> savedQuestions;
 
-//  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
-//  private Set<Role> roles;
+  @ManyToMany(mappedBy = "people", fetch = FetchType.EAGER)
+  private Set<Role> roles;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+  @ManyToMany
+  @JoinTable(name = "Person_to_topic",
+          joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "id")
+  )
   private Set<Topic> topics;
 
   public Person() {
@@ -95,13 +90,13 @@ public class Person {
     this.savedQuestions = savedQuestions;
   }
 
-//  public Set<Role> getRoles() {
-//    return roles;
-//  }
-//
-//  public void setRoles(Set<Role> roles) {
-//    this.roles = roles;
-//  }
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
 
   public Set<Topic> getTopics() {
     return topics;

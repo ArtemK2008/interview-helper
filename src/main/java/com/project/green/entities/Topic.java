@@ -26,11 +26,7 @@ public class Topic {
     @OneToMany(mappedBy = "topic")
     private Set<Question> questions;
 
-    @ManyToMany
-    @JoinTable(name = "Person_to_topic",
-            joinColumns = @JoinColumn(name = "topic_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-    )
+    @ManyToMany(mappedBy = "topics")
     private Set<Person> people;
 
     public Topic() {
@@ -99,12 +95,11 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(childTopic, topic.childTopic) && Objects.equals(children, topic.children) && Objects.equals(questions, topic.questions) && Objects.equals(people, topic.people);
+        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(children, topic.children);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, childTopic, children, questions, people);
+        return Objects.hash(id, title, children);
     }
-
 }

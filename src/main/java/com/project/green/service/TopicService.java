@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TopicService {
 
-    TopicDto getTopicById(int id);
+    TopicDto getById(int id);
 
     List<TopicDto> getAll();
 

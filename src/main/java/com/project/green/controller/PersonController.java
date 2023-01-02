@@ -1,46 +1,43 @@
 package com.project.green.controller;
 
-import com.project.green.entities.Person;
+import com.project.green.dto.PersonDto;
 import com.project.green.service.PersonService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("api/person")
+@Tag(name = "Person Controller", description = "controller for operation by person")
 public class PersonController {
 
-    private final PersonService personService;
-
     @Autowired
-    public PersonController(PersonService personService) {
-        this.personService = personService;
+    private PersonService personService;
+
+    @PostMapping("/create")
+    public void create(@RequestBody PersonDto personDto) {
+        personService.save(personDto);
     }
 
-    @PostMapping
-    public ResponseEntity<Person> save(@RequestBody Person person) {
-        return ResponseEntity.ok(personService.save(person));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Person>> findAll() {
-        return ResponseEntity.ok(personService.findAll());
+    @GetMapping("/all")
+    public List<PersonDto> findAll() {
+        return personService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> findById(@PathVariable int id) {
-        return ResponseEntity.ok(personService.findById(id));
+    public PersonDto findById(@PathVariable("id") int id) {
+        return personService.getById(id);
     }
 
-    @PutMapping("/{person}")
-    public ResponseEntity<Person> update(@RequestBody Person person) {
-        return ResponseEntity.ok(personService.update(person));
+    @PutMapping("/update")
+    public PersonDto update(@RequestBody PersonDto personDto) {
+        return personService.update(personDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Person> delete(@PathVariable int id) {;
-        return ResponseEntity.ok(personService.delete(id));
+    @DeleteMapping("/delete")
+    public void delete(@RequestBody PersonDto personDto) {
+        personService.deleteById(personDto.getId());
     }
 }

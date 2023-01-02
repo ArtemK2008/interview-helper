@@ -1,19 +1,19 @@
 package com.project.green.service;
 
-import com.project.green.entities.Person;
+import com.project.green.dto.PersonDto;
 
 import java.util.List;
 
 public interface PersonService {
 
-    Person save(Person person);
+    void save(PersonDto personDto);
 
-    List<Person> findAll();
+    List<PersonDto> getAll();
 
-    Person findById(int id);
+    PersonDto getById(int id);
 
-    Person update(Person person);
+    PersonDto update(PersonDto personDto);
 
-    Person delete(int id);
+    void deleteById(int id);
 
 }

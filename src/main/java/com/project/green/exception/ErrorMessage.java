@@ -1,4 +1,4 @@
-package com.project.green.exeption;
+package com.project.green.exception;
 
 public class ErrorMessage {
     private final Long createdAt;

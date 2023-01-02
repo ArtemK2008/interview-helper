@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface QuestionService {
 
-    void createQuestion(QuestionDto questionDto);
+    void save(QuestionDto questionDto);
 
-    QuestionDto updateQuestions(QuestionDto questionDto);
+    QuestionDto update(QuestionDto questionDto);
 
-    List<QuestionDto> findAll();
+    List<QuestionDto> getAll();
 
-    QuestionDto findById(int id);
+    QuestionDto getById(int id);
 
     void deleteById(int id);
 

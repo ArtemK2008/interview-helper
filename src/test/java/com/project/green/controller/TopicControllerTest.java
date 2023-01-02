@@ -82,7 +82,7 @@ public class TopicControllerTest {
         topic2.setId(2);
         topic2.setTitle("Spring");
         topic2.setChildren(children);
-        when(topicService.getTopicById(2)).thenReturn(topic2);
+        when(topicService.getById(2)).thenReturn(topic2);
         mockMvc.perform(get("/topic/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
