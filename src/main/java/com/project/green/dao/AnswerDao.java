@@ -4,11 +4,13 @@ import com.project.green.entities.Answer;
 
 import java.util.List;
 
-public interface AnswerDAO {
+public interface AnswerDao {
 
     Answer updateAnswer(Answer answer);
 
     List<Answer> getAllAnswersToQuestion();
+
+    List<Answer> getAllAnswersToQuestionInOrderByVoice(int questionId);
 
     Answer getById(int id);
 

@@ -17,4 +17,5 @@ public interface AnswerService {
 
     List<AnswerDto> getAllAnswersToQuestion();
 
+    List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId);
 }

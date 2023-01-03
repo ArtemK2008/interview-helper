@@ -41,4 +41,9 @@ public class AnswerController {
         answerService.deleteAnswer(id);
     }
 
+    @GetMapping("/all-in-order/{id}")
+    public List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(@PathVariable int id) {
+        return answerService.getAllAnswersToQuestionInOrderByVoice(id);
+    }
+
 }
