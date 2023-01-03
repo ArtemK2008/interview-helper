@@ -1,11 +1,11 @@
 package com.project.green.controller;
 
 import com.project.green.dto.AnswerDto;
-import com.project.green.entities.Answer;
 import com.project.green.service.AnswerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,12 +22,12 @@ public class AnswerController {
     }
 
     @GetMapping("/all")
-    public List<AnswerDto> getAllAnswers(){
+    public List<AnswerDto> getAllAnswers() {
         return answerService.getAllAnswersToQuestion();
     }
 
     @GetMapping("/{id}")
-    public AnswerDto getAnswer(@PathVariable int id){
+    public AnswerDto getAnswer(@PathVariable int id) {
         return answerService.getById(id);
     }
 

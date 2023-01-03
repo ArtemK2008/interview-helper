@@ -1,5 +1,7 @@
 package com.project.green.dto;
 
+import java.util.Objects;
+
 public class AnswerDto {
 
     private int id;
@@ -68,5 +70,18 @@ public class AnswerDto {
                 ", isDefault=" + isDefault +
                 ", questionId=" + questionId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnswerDto answerDto = (AnswerDto) o;
+        return id == answerDto.id && voiceCount == answerDto.voiceCount && isDefault == answerDto.isDefault && questionId == answerDto.questionId && Objects.equals(answerText, answerDto.answerText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, voiceCount, answerText, isDefault, questionId);
     }
 }
