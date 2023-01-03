@@ -58,4 +58,15 @@ public class AnswerDto {
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
     }
+
+    @Override
+    public String toString() {
+        return "AnswerDto{" +
+                "id=" + id +
+                ", voiceCount=" + voiceCount +
+                ", answerText='" + answerText + '\'' +
+                ", isDefault=" + isDefault +
+                ", questionId=" + questionId +
+                '}';
+    }
 }
