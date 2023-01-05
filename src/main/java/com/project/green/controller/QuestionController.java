@@ -28,23 +28,8 @@ public class QuestionController {
         return questionService.getById(id);
     }
 
-    @PostMapping("/create")
-    public void create(@RequestBody @Valid QuestionDto questionDto) {
-        questionService.save(questionDto);
-    }
-
-    @PostMapping("/update")
-    public QuestionDto update(@RequestBody @Valid QuestionDto questionDto) {
-        return questionService.update(questionDto);
-    }
-
-    @PostMapping("/delete")
-    public void delete(@RequestBody @Valid QuestionDto questionDto) {
-        questionService.deleteById(questionDto.getId());
-    }
-
-    @GetMapping("/all-by-topic")
-    public List<QuestionDto> getQuestionByTopicId(int id) {
+    @GetMapping("/all-by-topic/{id}")
+    public List<QuestionDto> getQuestionByTopicId(@PathVariable("id") int id) {
         return questionService.findAllByTopicId(id);
     }
 

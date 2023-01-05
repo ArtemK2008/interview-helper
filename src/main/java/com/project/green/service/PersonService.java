@@ -12,6 +12,8 @@ public interface PersonService {
 
     PersonDto getById(int id);
 
+    PersonDto getByEmail(String email);
+
     PersonDto update(PersonDto personDto);
 
     void deleteById(int id);
