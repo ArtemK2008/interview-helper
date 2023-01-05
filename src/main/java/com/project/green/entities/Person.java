@@ -1,5 +1,6 @@
 package com.project.green.entities;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -104,5 +105,28 @@ public class Person {
 
   public void setTopics(Set<Topic> topics) {
     this.topics = topics;
+  }
+
+  @Override
+  public String toString() {
+    return "Person{" +
+            "id=" + id +
+            ", fullName='" + fullName + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Person person = (Person) o;
+    return id == person.id && Objects.equals(fullName, person.fullName) && Objects.equals(email, person.email) && Objects.equals(password, person.password);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, fullName, email, password);
   }
 }

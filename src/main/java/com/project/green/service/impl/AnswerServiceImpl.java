@@ -1,8 +1,7 @@
 package com.project.green.service.impl;
 
-import com.project.green.dao.AnswerDAO;
+import com.project.green.dao.AnswerDao;
 import com.project.green.dto.AnswerDto;
-import com.project.green.entities.Answer;
 import com.project.green.mapper.AnswerMapper;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
-    private AnswerDAO answerDAO;
+    private AnswerDao answerDAO;
 
     @Autowired
     private AnswerMapper answerMapper;
@@ -53,5 +52,10 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public List<AnswerDto> getAllAnswersToQuestion() {
         return answerDAO.getAllAnswersToQuestion().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId) {
+        return answerDAO.getAllAnswersToQuestionInOrderByVoice(questionId).stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
 }

@@ -1,9 +1,6 @@
 package com.project.green.dto;
 
-import com.project.green.entities.Role;
-import com.project.green.entities.Statistics;
-import com.project.green.entities.Topic;
-
+import java.util.Objects;
 import java.util.Set;
 
 public class PersonDto {
@@ -65,5 +62,30 @@ public class PersonDto {
 
     public void setTopics(Set<TopicDto> topics) {
         this.topics = topics;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDto{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", statisticsId=" + statisticsId +
+                ", topics=" + topics +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDto personDto = (PersonDto) o;
+        return id == personDto.id && statisticsId == personDto.statisticsId && Objects.equals(fullName, personDto.fullName) && Objects.equals(email, personDto.email) && Objects.equals(password, personDto.password) && Objects.equals(topics, personDto.topics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fullName, email, password, statisticsId, topics);
     }
 }

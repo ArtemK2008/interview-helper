@@ -1,6 +1,5 @@
 package com.project.green.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public class Answer {
     @Column(name = "isdefault")
     private boolean isDefault;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
 
