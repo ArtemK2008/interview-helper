@@ -4,7 +4,6 @@ import com.project.green.dao.PersonDao;
 import com.project.green.dao.TopicDao;
 import com.project.green.dto.PersonDto;
 import com.project.green.entities.Person;
-import com.project.green.entities.Topic;
 import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.PersonMapper;
 import com.project.green.service.PersonService;
@@ -12,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +43,13 @@ public class PersonServiceImpl implements PersonService {
         return mapper.toPersonDto(personDao.getPersonById(id).
                 orElseThrow(() -> new NotFoundValueException(Person.class, "id", id)));
     }
+
+    @Override
+    public PersonDto getByEmail(String email) {
+        return mapper.toPersonDto(personDao.getPersonByEmail(email)
+                .orElseThrow(() -> new NotFoundValueException(Person.class, "email", email)));
+    }
+
 
     @Transactional
     @Override
