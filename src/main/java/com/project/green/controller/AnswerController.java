@@ -16,34 +16,13 @@ public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
-    @PostMapping("/create")
-    public void addNewAnswer(@RequestBody AnswerDto answerDto) {
-        answerService.saveAnswer(answerDto);
-    }
-
-    @GetMapping("/all")
-    public List<AnswerDto> getAllAnswers() {
-        return answerService.getAllAnswersToQuestion();
-    }
-
     @GetMapping("/{id}")
     public AnswerDto getAnswer(@PathVariable int id) {
         return answerService.getById(id);
-    }
-
-    @PutMapping
-    public AnswerDto updateAnswer(@RequestBody AnswerDto answerDto) {
-        return answerService.updateAnswer(answerDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteAnswer(@PathVariable int id) {
-        answerService.deleteAnswer(id);
     }
 
     @GetMapping("/all-in-order/{id}")
     public List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(@PathVariable int id) {
         return answerService.getAllAnswersToQuestionInOrderByVoice(id);
     }
-
 }
