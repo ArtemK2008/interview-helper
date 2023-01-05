@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("/admin")
 @Tag(name = "Admin Controller", description = "controller for admin operations")
 public class AdminController {
 
