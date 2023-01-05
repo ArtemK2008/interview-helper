@@ -95,6 +95,19 @@ public class Question {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return id == question.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
     public String toString() {
         return "Question{" +
                 "id=" + id +
@@ -103,18 +116,5 @@ public class Question {
                 ", answers=" + answers +
                 ", personsWhoSavedThis=" + personsWhoSavedThis +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Question question = (Question) o;
-        return id == question.id && Objects.equals(questionText, question.questionText) && Objects.equals(topic, question.topic) && Objects.equals(answers, question.answers) && Objects.equals(personsWhoSavedThis, question.personsWhoSavedThis);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, questionText, topic, answers, personsWhoSavedThis);
     }
 }

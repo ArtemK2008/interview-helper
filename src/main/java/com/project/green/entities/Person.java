@@ -29,7 +29,7 @@ public class Person {
   @ManyToMany(mappedBy = "personsWhoSavedThis")
   private Set<Question> savedQuestions;
 
-  @ManyToMany(mappedBy = "people", fetch = FetchType.EAGER)
+  @ManyToMany(mappedBy = "people", fetch = FetchType.LAZY)
   private Set<Role> roles;
 
   @ManyToMany

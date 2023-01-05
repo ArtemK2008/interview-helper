@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Scope("session")
@@ -58,7 +59,8 @@ public class LoginController {
     public String goToTopics(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("sessionId"));
         List<TopicDto> allTopics = topics.getAll();
-        model.addAttribute("topicList", allTopics);
+        List<String> titles = allTopics.stream().map(a->a.getTitle()).collect(Collectors.toList());
+        model.addAttribute("topicList", titles);
         return "questions/topic-page";
     }
 

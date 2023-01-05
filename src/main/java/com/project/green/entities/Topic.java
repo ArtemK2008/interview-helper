@@ -35,7 +35,7 @@ public class Topic {
     @OneToMany(mappedBy = "childTopic")
     private Set<Topic> children;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     private Set<Question> questions;
 
     @ManyToMany(mappedBy = "topics")
@@ -107,7 +107,10 @@ public class Topic {
         return "Topic{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", childTopic=" + childTopic +
                 ", children=" + children +
+                ", questions=" + questions +
+                ", people=" + people +
                 '}';
     }
 
@@ -116,11 +119,11 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(children, topic.children);
+        return id == topic.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, children);
+        return Objects.hash(id);
     }
 }
