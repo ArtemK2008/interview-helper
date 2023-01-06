@@ -1,87 +1,127 @@
 package com.project.green.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import java.util.Objects;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 public class Topic {
 
-  @Id
-  @Column(name = "id")
-  @SequenceGenerator(name = "topic_seq", sequenceName = "topic_sequence", initialValue = 1, allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_seq")
-  private int id;
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "topic_seq", sequenceName = "topic_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topic_seq")
+    private int id;
 
-  @Column(name = "name")
-  private String title;
+    @Column(name = "name")
+    private String title;
 
-  @ManyToOne
-  @JoinColumn(name = "child_topic_id")
-  private Topic childTopic;
+    @ManyToOne()
+    @JoinColumn(name = "child_topic_id")
+    private Topic childTopic;
 
-  @OneToMany(mappedBy = "childTopic")
-  private Set<Topic> children;
 
-  @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-  private Set<Question> questions;
+    @OneToMany(mappedBy = "childTopic")
+    private Set<Topic> children;
 
-  @ManyToMany
-  @JoinTable(name = "Person_to_topic",
-          joinColumns = @JoinColumn(name = "topic_id"),
-          inverseJoinColumns = @JoinColumn(name = "person_id")
-  )
-  private Set<Person> people;
+    @OneToMany(mappedBy = "topic")
+    private Set<Question> questions;
 
-  public Topic() {
-    super();
-  }
+    @ManyToMany(mappedBy = "topics")
+    private Set<Person> people;
 
-  public int getId() {
-    return id;
-  }
+    public Topic() {
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public Topic(int id, String title, Topic childTopic, Set<Topic> children, Set<Question> questions,
+                 Set<Person> people) {
+        this.id = id;
+        this.title = title;
+        this.childTopic = childTopic;
+        this.children = children;
+        this.questions = questions;
+        this.people = people;
+    }
 
-  public String getTitle() {
-    return title;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public Set<Question> getQuestions() {
-    return questions;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  public void setQuestions(Set<Question> questions) {
-    this.questions = questions;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  public Topic getChildTopic() {
-    return childTopic;
-  }
+    public Set<Question> getQuestions() {
+        return questions;
+    }
 
-  public void setChildTopic(Topic childTopic) {
-    this.childTopic = childTopic;
-  }
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 
-  public Set<Topic> getChildren() {
-    return children;
-  }
+    public Topic getChildTopic() {
+        return childTopic;
+    }
 
-  public void setChildren(Set<Topic> children) {
-    this.children = children;
-  }
+    public void setChildTopic(Topic childTopic) {
+        this.childTopic = childTopic;
+    }
 
-  public Set<Person> getPeople() {
-    return people;
-  }
+    public Set<Topic> getChildren() {
+        return children;
+    }
 
-  public void setPeople(Set<Person> people) {
-    this.people = people;
-  }
+    public void setChildren(Set<Topic> children) {
+        this.children = children;
+    }
+
+    public Set<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(Set<Person> people) {
+        this.people = people;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", childTopic=" + childTopic +
+                ", children=" + children +
+                ", questions=" + questions +
+                ", people=" + people +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Topic topic = (Topic) o;
+        return id == topic.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

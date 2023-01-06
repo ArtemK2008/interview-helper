@@ -1,5 +1,6 @@
 package com.project.green.security;
 
+import com.project.green.entities.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
@@ -7,15 +8,16 @@ import java.util.Objects;
 public class CustomGrantedAuthority implements GrantedAuthority {
 
     private final String PREFIX = "ROLE_";
-    private final UserRole userRole;
 
-    public CustomGrantedAuthority(UserRole userRole) {
+    private final Role userRole;
+
+    public CustomGrantedAuthority(Role userRole) {
         this.userRole = userRole;
     }
 
     @Override
     public String getAuthority() {
-        return PREFIX + userRole.name();
+        return PREFIX + userRole.getPosition();
     }
 
     @Override

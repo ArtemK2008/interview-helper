@@ -1,6 +1,5 @@
 package com.project.green.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,69 +8,102 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import java.util.Objects;
 
 @Entity
 public class Answer {
 
-  @Id
-  @Column(name = "id")
-  @SequenceGenerator(name = "answer_seq", sequenceName = "answer_sequence", initialValue = 1, allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_seq")
-  private int id;
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "answer_seq", sequenceName = "answer_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_seq")
+    private int id;
 
-  @Column(name = "voice_count")
-  private int voiceCount;
+    @Column(name = "voice_count")
+    private int voiceCount;
 
-  @Column(name = "answer")
-  private String answerText;
+    @Column(name = "answer")
+    private String answerText;
 
-  @Column(name = "isDefault")
-  private boolean isDefault;
+    @Column(name = "isdefault")
+    private boolean isDefault;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "question_id")
-  private Question question;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-  public Answer() {
-  }
+    public Answer() {
+    }
 
-  public int getId() {
-    return id;
-  }
+    public Answer(int id, int voiceCount, String answerText, boolean isDefault, Question question) {
+        this.id = id;
+        this.voiceCount = voiceCount;
+        this.answerText = answerText;
+        this.isDefault = isDefault;
+        this.question = question;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public int getVoiceCount() {
-    return voiceCount;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public void setVoiceCount(int voiceCount) {
-    this.voiceCount = voiceCount;
-  }
+    public int getVoiceCount() {
+        return voiceCount;
+    }
 
-  public String getAnswerText() {
-    return answerText;
-  }
+    public void setVoiceCount(int voiceCount) {
+        this.voiceCount = voiceCount;
+    }
 
-  public void setAnswerText(String answerText) {
-    this.answerText = answerText;
-  }
+    public String getAnswerText() {
+        return answerText;
+    }
 
-  public Question getQuestion() {
-    return question;
-  }
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
 
-  public void setQuestion(Question question) {
-    this.question = question;
-  }
+    public Question getQuestion() {
+        return question;
+    }
 
-  public boolean isDefault() {
-    return isDefault;
-  }
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
-  public void setDefault(boolean aDefault) {
-    isDefault = aDefault;
-  }
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", voiceCount=" + voiceCount +
+                ", answerText='" + answerText + '\'' +
+                ", isDefault=" + isDefault +
+                ", question=" + question +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Answer answer = (Answer) o;
+        return id == answer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

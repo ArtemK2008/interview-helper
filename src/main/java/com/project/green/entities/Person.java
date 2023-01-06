@@ -1,24 +1,35 @@
 package com.project.green.entities;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "person-entity-graph",
+attributeNodes = {
+        @NamedAttributeNode("roles") ,
+        @NamedAttributeNode("statistics"),
+        @NamedAttributeNode("savedQuestions"),
+        @NamedAttributeNode(("topics"))
+}
+)
 public class Person {
 
   @Id
   @Column(name = "id")
-  @SequenceGenerator(name = "person_seq", sequenceName = "person_sequence", initialValue = 1, allocationSize = 1)
+  @SequenceGenerator(name = "person_seq", sequenceName = "person_id_seq", initialValue = 1, allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
   private int id;
 
@@ -31,16 +42,20 @@ public class Person {
   @Column(name = "password")
   private String password;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy="person")
+  @OneToOne(mappedBy="person")
   private Statistics statistics;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "personsWhoSavedThis")
+  @ManyToMany(mappedBy = "personsWhoSavedThis")
   private Set<Question> savedQuestions;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+  @ManyToMany(mappedBy = "people", fetch = FetchType.LAZY)
   private Set<Role> roles;
 
-  @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "people")
+  @ManyToMany
+  @JoinTable(name = "Person_to_topic",
+          joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "id")
+  )
   private Set<Topic> topics;
 
   public Person() {
@@ -109,5 +124,28 @@ public class Person {
 
   public void setTopics(Set<Topic> topics) {
     this.topics = topics;
+  }
+
+  @Override
+  public String toString() {
+    return "Person{" +
+            "id=" + id +
+            ", fullName='" + fullName + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Person person = (Person) o;
+    return id == person.id && Objects.equals(fullName, person.fullName) && Objects.equals(email, person.email) && Objects.equals(password, person.password);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, fullName, email, password);
   }
 }

@@ -1,25 +1,33 @@
-/*
- * package com.project.green.security;
- * 
- * import java.util.stream.Collectors;
- * 
- * import org.springframework.security.core.userdetails.UserDetails; import
- * org.springframework.security.core.userdetails.UserDetailsService; import
- * org.springframework.security.core.userdetails.UsernameNotFoundException;
- * import org.springframework.stereotype.Service;
- * 
- * @Service public class CustomUserDetailsService implements UserDetailsService
- * {
- * 
- * private final UserRepository userRepository;
- * 
- * public CustomUserDetailsService(UserRepository userRepository) {
- * this.userRepository = userRepository; }
- * 
- * @Override public UserDetails loadUserByUsername(String email) throws
- * UsernameNotFoundException { User user = userRepository.findByEmail(email); if
- * (user == null) { throw new UsernameNotFoundException("User not found."); }
- * return new CustomUserDetails(user.getId(), user.getEmail(),
- * user.getPassword(), user.getUserRoles().stream()
- * .map(CustomGrantedAuthority::new).collect(Collectors.toList())); } }
- */
+package com.project.green.security;
+
+import com.project.green.dao.PersonDao;
+import com.project.green.entities.Person;
+import com.project.green.exception.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
+
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private PersonDao personDao;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Person person = personDao.getPersonByEmail(email).orElseThrow(() -> new EntityNotFoundException("Entity not found."));
+        if (person == null) {
+            throw new UsernameNotFoundException("User not found.");
+        }
+        return new CustomUserDetails(
+                person.getId(),
+                person.getEmail(),
+                person.getPassword(),
+                person.getRoles()
+                        .stream().map(CustomGrantedAuthority::new).collect(Collectors.toList()));
+    }
+}

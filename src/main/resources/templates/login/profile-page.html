@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+</head>
+<body>
+<h1>Profile for User with id :  <span th:text="${id}">id</span></h1>
+
+<p>You have answered :  <span th:text="${correct}">correct</span> questions correctly</p>
+<p>You have answered :  <span th:text="${wrong}">correct</span> questions wrong</p>
+
+
+<div th:replace="footer::footer"></div>
+
+</body>
+</html>
