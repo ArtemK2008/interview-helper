@@ -7,10 +7,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
 import java.util.Objects;
 
 @Entity
+@NamedEntityGraph(name = "answer-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "question", subgraph = "question-subgraphs"),
+        }
+        ,
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "question-subgraphs",
+                        attributeNodes =  {
+                                @NamedAttributeNode("topic"),
+                                @NamedAttributeNode("answers"),
+                                @NamedAttributeNode("personsWhoSavedThis")
+                        }
+                )
+                }
+)
 public class Answer {
 
     @Id
@@ -99,11 +118,11 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer = (Answer) o;
-        return id == answer.id && voiceCount == answer.voiceCount && isDefault == answer.isDefault && answerText.equals(answer.answerText) && question.equals(answer.question);
+        return id == answer.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, voiceCount, answerText, isDefault, question);
+        return Objects.hash(id);
     }
 }

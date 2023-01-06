@@ -1,6 +1,7 @@
 package com.project.green.controller.mvc;
 
 import com.project.green.dto.TopicDto;
+import com.project.green.service.StatisticsService;
 import com.project.green.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +24,11 @@ import java.util.stream.Collectors;
 public class LoginController {
 
     @Autowired
-    TopicService topics;
+    TopicService topicService;
+
+    @Autowired
+    StatisticsService statisticsService;
+
 
     @GetMapping("/index")
     public String showSignUpForm(Model model) {
@@ -48,13 +53,20 @@ public class LoginController {
 
     @GetMapping("/Display-Profile")
     public String goToProfile(HttpSession session, Model model) {
-        model.addAttribute("id", session.getAttribute("sessionId"));
+        String sessionId = (String)session.getAttribute("sessionId");
+        int id = Integer.valueOf(sessionId);
+        int incorrectCount = statisticsService.getIncorrectCount(id);
+        int correctCount = statisticsService.getCorrectCount(id);
+        model.addAttribute("id", id);
+        model.addAttribute("wrong", id);
+        model.addAttribute("correct", id);
+
         return "login/profile-page";
     }
     @GetMapping("/Display-Topics")
     public String goToTopics(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("sessionId"));
-        List<TopicDto> allTopics = topics.getAll();
+        List<TopicDto> allTopics = topicService.getAll();
         List<String> titles = allTopics.stream().map(a->a.getTitle()).collect(Collectors.toList());
         model.addAttribute("topicList", titles);
         return "questions/topic-page";
@@ -64,7 +76,7 @@ public class LoginController {
     public RedirectView displayTopicsQuestions(@RequestParam("topic") String topic, RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
-        TopicDto pickedTopic = topics.getTopicByTitle(topic);
+        TopicDto pickedTopic = topicService.getTopicByTitle(topic);
        // pickedTopic.getQ
         redirectAttributes.addFlashAttribute("topic", pickedTopic.getTitle());
         redirectView.setUrl("/questions/" + pickedTopic.getTitle());

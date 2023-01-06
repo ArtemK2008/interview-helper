@@ -81,7 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
         if(!topic.isPresent()){
             throw new EntityNotFoundException("Topic is not found");
         }
-        Optional<List<Question>> questions = questionDao.getAllByTopicId(id);
+        Optional<List<Question>> questions = questionDao.getAllQuestionsByTopicId(id);
         if (questions.isPresent()) {
             return questions.get().stream().map(questionMapper::toQuestionDto).collect(Collectors.toList());
         }else{

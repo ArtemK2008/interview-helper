@@ -1,4 +1,4 @@
-package com.project.green.controller;
+package com.project.green.controller.rest;
 
 import com.project.green.dto.PersonDto;
 import com.project.green.security.CustomUserDetails;

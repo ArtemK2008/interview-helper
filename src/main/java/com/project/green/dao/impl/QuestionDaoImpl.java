@@ -5,6 +5,7 @@ import com.project.green.entities.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
@@ -27,35 +28,48 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Override
     public void delete(int id) {
-        entityManager.remove(entityManager.getReference(Question.class, id));
+        EntityGraph entityGraph = entityManager.getEntityGraph("question-entity-graph");
+        entityManager.createQuery("delete from Question q where q.id=:id")
+                .setParameter("id", id)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .executeUpdate();
     }
 
     @Override
     public Optional<Question> getById(int id) {
-        return Optional.of(entityManager.find(Question.class, id));
+        EntityGraph entityGraph = entityManager.getEntityGraph("question-entity-graph");
+        return Optional.of(entityManager.createQuery("select q from Question q where q.id=:id", Question.class).
+                setParameter("id", id).setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult());
     }
 
     public Optional<Question> getByValue(String value) {
-        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = ?1", Question.class)
-                .setParameter(1, value)
+        EntityGraph entityGraph = entityManager.getEntityGraph("question-entity-graph");
+        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = ?1", Question.class).
+                setParameter(1, value).setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult());
     }
 
     @Override
     public Optional<List<Question>> getAll() {
-        return Optional.ofNullable(entityManager.createQuery("from " + Question.class.getSimpleName(), Question.class).getResultList());
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
+        return Optional.ofNullable(entityManager.createQuery("from " + Question.class.getSimpleName(), Question.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph).getResultList());
     }
 
     @Override
-    public Optional<List<Question>> getAllByTopicId(int id) {
+    public Optional<List<Question>> getAllQuestionsByTopicId(int id) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
         return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.topic.id=:id", Question.class)
-                .setParameter("id", id).getResultList());
+                .setParameter("id", id).setHint("javax.persistence.fetchgraph", entityGraph).getResultList());
     }
 
     @Override
     public Optional<List<String>> countQuestionByTopic() {
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
         return Optional.ofNullable(entityManager.createNativeQuery(
                         "select t.name, count(q) from question q left join topic t on q.topic_id = t.id group by t.name", String.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getResultList());
     }
 

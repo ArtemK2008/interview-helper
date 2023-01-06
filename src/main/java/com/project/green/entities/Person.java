@@ -1,11 +1,53 @@
 package com.project.green.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
-
 @Entity
+@NamedEntityGraph(name = "person-entity-graph",
+attributeNodes = {
+        @NamedAttributeNode("roles") ,
+        @NamedAttributeNode(value = "statistics", subgraph = "statistics-subgraph"),
+        @NamedAttributeNode(value = "savedQuestions", subgraph = "savedQuestions-subgraph"),
+        @NamedAttributeNode(value = "topics", subgraph = "topics-subgraph")
+},
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "statistics-subgraph",
+                        attributeNodes =  {
+                                @NamedAttributeNode("questionsAnsweredWrong"),
+                        }
+                ),
+                        @NamedSubgraph(
+                                name ="savedQuestions-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("topic"),
+                                        @NamedAttributeNode("answers"),
+                                        @NamedAttributeNode("personsWhoSavedThis")
+                                }),
+                        @NamedSubgraph(
+                                name ="topics-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("questions"),
+                                        @NamedAttributeNode("children"),
+                                        @NamedAttributeNode("childTopic")
+                                })
+                }
+)
 public class Person {
 
   @Id

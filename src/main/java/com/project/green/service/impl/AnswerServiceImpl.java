@@ -2,6 +2,8 @@ package com.project.green.service.impl;
 
 import com.project.green.dao.AnswerDao;
 import com.project.green.dto.AnswerDto;
+import com.project.green.entities.Answer;
+import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.AnswerMapper;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +25,12 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public AnswerDto saveAnswer(AnswerDto answerDto) {
-        if (answerDto == null) {
-            throw new IllegalArgumentException("Answer is null");
-        }
         return answerMapper.toAnswerDto(answerDAO.saveAnswer(answerMapper.toAnswer(answerDto)));
     }
 
     @Override
     @Transactional
     public AnswerDto updateAnswer(AnswerDto answerDto) {
-        if (answerDto == null) {
-            throw new IllegalArgumentException("Answer is null");
-        }
         return answerMapper.toAnswerDto(answerDAO.updateAnswer(answerMapper.toAnswer(answerDto)));
     }
 
@@ -46,12 +42,13 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerDto getById(int id) {
-        return answerMapper.toAnswerDto(answerDAO.getById(id));
+return answerMapper.toAnswerDto(answerDAO.getById(id).
+                orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
     }
 
     @Override
-    public List<AnswerDto> getAllAnswersToQuestion() {
-        return answerDAO.getAllAnswersToQuestion().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
+    public List<AnswerDto> getAllAnswers() {
+        return answerDAO.getAllAnswers().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
 
     @Override

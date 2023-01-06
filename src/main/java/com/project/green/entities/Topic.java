@@ -8,12 +8,42 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "topic-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "questions", subgraph = "questions-subgraphs"),
+                @NamedAttributeNode(value = "people", subgraph = "people-subgraph"),
+                @NamedAttributeNode(value = "children"),
+                @NamedAttributeNode(value = "childTopic"),
+        }
+        ,
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "questions-subgraphs",
+                        attributeNodes = {
+                                @NamedAttributeNode("topic"),
+                                @NamedAttributeNode("answers"),
+                                @NamedAttributeNode("personsWhoSavedThis")
+                        }
+                ),
+                        @NamedSubgraph(
+                                name ="people-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("statistics"),
+                                        @NamedAttributeNode("savedQuestions"),
+                                        @NamedAttributeNode("roles"),
+                                        @NamedAttributeNode("topics")
+                                })
+                }
+)
 public class Topic {
 
     @Id
@@ -117,11 +147,11 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(children, topic.children);
+        return id == topic.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, children);
+        return Objects.hash(id);
     }
 }

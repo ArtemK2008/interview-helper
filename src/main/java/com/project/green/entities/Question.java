@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.util.List;
@@ -17,6 +20,36 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "question-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "answers", subgraph = "answers-subgraph"),
+                @NamedAttributeNode(value = "personsWhoSavedThis", subgraph = "personsWhoSavedThis-subgraph"),
+                @NamedAttributeNode(value = "topic", subgraph = "topic-subgraph")
+        },
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "answers-subgraph",
+                        attributeNodes =  {
+                                @NamedAttributeNode("question"),
+                        }
+                ),
+                        @NamedSubgraph(
+                                name ="personsWhoSavedThis-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("statistics"),
+                                        @NamedAttributeNode("savedQuestions"),
+                                        @NamedAttributeNode("roles"),
+                                        @NamedAttributeNode("topics")
+                                }),
+                        @NamedSubgraph(
+                                name ="topic-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("questions"),
+                                        @NamedAttributeNode("children"),
+                                        @NamedAttributeNode("childTopic")
+                                })
+                }
+)
 public class Question {
 
     @Id
@@ -98,12 +131,12 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return id == question.id && Objects.equals(questionText, question.questionText) && Objects.equals(topic, question.topic) && Objects.equals(answers, question.answers) && Objects.equals(personsWhoSavedThis, question.personsWhoSavedThis);
+        return id == question.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, questionText, topic, answers, personsWhoSavedThis);
+        return Objects.hash(id);
     }
 
     @Override

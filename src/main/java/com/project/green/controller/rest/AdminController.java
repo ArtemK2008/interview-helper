@@ -1,4 +1,4 @@
-package com.project.green.controller;
+package com.project.green.controller.rest;
 
 import com.project.green.dto.AnswerDto;
 import com.project.green.dto.PersonDto;
@@ -65,7 +65,7 @@ public class AdminController {
 
     @GetMapping("/answer/all")
     public List<AnswerDto> getAllAnswers() {
-        return answerService.getAllAnswersToQuestion();
+        return answerService.getAllAnswers();
     }
 
     @PostMapping("/answer/create")

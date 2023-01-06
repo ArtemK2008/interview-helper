@@ -1,6 +1,15 @@
 package com.project.green.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Objects;
 import java.util.Set;
 
@@ -70,11 +79,11 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id == role.id && Objects.equals(position, role.position) && Objects.equals(people, role.people);
+        return id == role.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, position, people);
+        return Objects.hash(id);
     }
 }
