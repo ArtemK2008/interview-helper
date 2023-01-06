@@ -1,6 +1,5 @@
 package com.project.green.controller.mvc;
 
-import com.project.green.business.ProfilePage;
 import com.project.green.dto.TopicDto;
 import com.project.green.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;

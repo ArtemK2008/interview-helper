@@ -2,12 +2,10 @@ package com.project.green.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,7 +25,7 @@ public class Topic {
     @Column(name = "name")
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "child_topic_id")
     private Topic childTopic;
 
@@ -35,7 +33,7 @@ public class Topic {
     @OneToMany(mappedBy = "childTopic")
     private Set<Topic> children;
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "topic")
     private Set<Question> questions;
 
     @ManyToMany(mappedBy = "topics")
@@ -119,11 +117,11 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id;
+        return id == topic.id && Objects.equals(title, topic.title) && Objects.equals(children, topic.children);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title, children);
     }
 }
