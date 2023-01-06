@@ -13,7 +13,13 @@ public interface StatisticsDao {
 
     Set<Question> getUnansweredQuestionsById(int id);
 
+    int getIncorrectsCount(int id);
+
+    int getCorrectsCount(int id);
+
     boolean addQuestionToStatistics(int id, Question question);
+
+    boolean removeQuestionFromStatistics(int id, Question question);
 
     void incrementCorrects(int id, int value);
 
