@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 public class LoginController {
 
     @Autowired
-    ProfilePage profilePage;
-
-    @Autowired
     TopicService topics;
 
     @GetMapping("/index")
