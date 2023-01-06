@@ -13,9 +13,9 @@ public interface StatisticsService {
 
     List<QuestionDto> getUnansweredQuestionsById(int id);
 
-    void addQuestionToStatistics(int id, Question question);
+    void addQuestionToStatistics(int id, QuestionDto questionDto);
 
-    void removeQuestionFromStatistics(int id, Question question);
+    void removeQuestionFromStatistics(int id, QuestionDto questionDto);
 
     int getCorrectCount(int id);
 

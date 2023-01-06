@@ -31,6 +31,7 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
                 orElseThrow(() -> new NotFoundValueException(Person.class, "id", id)));
     }
 
+
     @Override
     public List<StatisticsDto> getAll() {
         return statisticsDao.findAll().stream().map(statisticsMapper::toStatisticsDto).collect(Collectors.toList());
@@ -42,13 +43,13 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
     }
 
     @Override
-    public void addQuestionToStatistics(int id, Question question) {
-        statisticsDao.addQuestionToStatistics(id, question);
+    public  void addQuestionToStatistics(int id, QuestionDto questionDto) {
+        statisticsDao.addQuestionToStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 
     @Override
-    public void removeQuestionFromStatistics(int id, Question question) {
-        statisticsDao.removeQuestionFromStatistics(id, question);
+    public void  removeQuestionFromStatistics(int id, QuestionDto questionDto) {
+        statisticsDao.removeQuestionFromStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 
     @Override
@@ -70,6 +71,5 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
     public void incrementIncorrect(int id, int value) {
         statisticsDao.incrementIncorrects(id, value);
     }
-
 
 }
