@@ -20,6 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyRole("ADMIN")
                 .anyRequest()
                 .authenticated()
+                .and().
+                formLogin()
                 .and()
                 .httpBasic();
     }

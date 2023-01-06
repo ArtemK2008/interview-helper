@@ -4,6 +4,7 @@ import com.project.green.dao.PersonDao;
 import com.project.green.entities.Person;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -29,9 +30,14 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Optional<Person> getPersonByEmail(String email) {
-        return Optional.of(entityManager.createQuery("select p from Person p where p.email=:email", Person.class).
-                setParameter("email", email).
-                getSingleResult());
+
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
+        Person currPerson = entityManager.createQuery("select p from Person p where p.email=:email", Person.class)
+                .setParameter("email", email)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult();
+
+        return Optional.of(currPerson);
     }
 
     @Override

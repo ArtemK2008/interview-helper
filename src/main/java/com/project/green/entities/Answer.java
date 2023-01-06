@@ -99,11 +99,11 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer = (Answer) o;
-        return id == answer.id && voiceCount == answer.voiceCount && isDefault == answer.isDefault && answerText.equals(answer.answerText) && question.equals(answer.question);
+        return id == answer.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, voiceCount, answerText, isDefault, question);
+        return Objects.hash(id);
     }
 }
