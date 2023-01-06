@@ -15,6 +15,8 @@ public interface AnswerDao {
 
     Optional<Answer> getById(int id);
 
+    Optional<Answer> getByQuestionId(int id);
+
     void deleteAnswer(int id);
 
     Answer saveAnswer(Answer answer);

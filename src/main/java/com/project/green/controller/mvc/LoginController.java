@@ -1,6 +1,10 @@
 package com.project.green.controller.mvc;
 
+import com.project.green.dto.AnswerDto;
+import com.project.green.dto.QuestionDto;
 import com.project.green.dto.TopicDto;
+import com.project.green.service.AnswerService;
+import com.project.green.service.QuestionService;
 import com.project.green.service.StatisticsService;
 import com.project.green.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,12 @@ public class LoginController {
     @Autowired
     StatisticsService statisticsService;
 
+    @Autowired
+    QuestionService questionService;
+
+    @Autowired
+    AnswerService answerService;
+
 
     @GetMapping("/index")
     public String showSignUpForm(Model model) {
@@ -53,21 +63,49 @@ public class LoginController {
 
     @GetMapping("/Display-Profile")
     public String goToProfile(HttpSession session, Model model) {
-        String sessionId = (String)session.getAttribute("sessionId");
+        String sessionId = (String) session.getAttribute("sessionId");
         int id = Integer.valueOf(sessionId);
         int incorrectCount = statisticsService.getIncorrectCount(id);
         int correctCount = statisticsService.getCorrectCount(id);
+        List<QuestionDto> unansweredQuestions = statisticsService.getUnansweredQuestionsById(id);
+        List<String> questionDescribtion = unansweredQuestions.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
         model.addAttribute("id", id);
-        model.addAttribute("wrong", id);
-        model.addAttribute("correct", id);
-
+        model.addAttribute("wrong", incorrectCount);
+        model.addAttribute("correct", correctCount);
+        model.addAttribute("questionList", questionDescribtion);
         return "login/profile-page";
     }
+
+    @PostMapping("/display-ununswered-questions")
+    public RedirectView displayUnunswereedQuestion(@RequestParam("question") String question, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setContextRelative(true);
+        QuestionDto currQuestion = questionService.getByValue(question);
+        int id = currQuestion.getId();
+        AnswerDto answerClass = answerService.getByQuestionId(id);
+        String answerText = answerClass.getAnswerText();
+        redirectAttributes.addFlashAttribute("question", question);
+        redirectAttributes.addFlashAttribute("answer", answerText);
+        redirectView.setUrl("/questions/display-answer/" + id);
+        return redirectView;
+    }
+
+    @GetMapping("questions/display-answer/{questionId}")
+    public String displayAnswer(@PathVariable("questionId") String questionId) {
+        return "questions/answer-page";
+    }
+
+    @GetMapping("/Display-other-answers")
+    public String displayOtherAnswwers() {
+        return "/not-implemented";
+    }
+
+
     @GetMapping("/Display-Topics")
     public String goToTopics(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("sessionId"));
         List<TopicDto> allTopics = topicService.getAll();
-        List<String> titles = allTopics.stream().map(a->a.getTitle()).collect(Collectors.toList());
+        List<String> titles = allTopics.stream().map(a -> a.getTitle()).collect(Collectors.toList());
         model.addAttribute("topicList", titles);
         return "questions/topic-page";
     }
@@ -77,14 +115,13 @@ public class LoginController {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         TopicDto pickedTopic = topicService.getTopicByTitle(topic);
-       // pickedTopic.getQ
         redirectAttributes.addFlashAttribute("topic", pickedTopic.getTitle());
         redirectView.setUrl("/questions/" + pickedTopic.getTitle());
         return redirectView;
     }
 
     @GetMapping("/questions/{title}")
-    public String displayQuestionList (@PathVariable("title") String title, Model model) {
+    public String displayQuestionList(@PathVariable("title") String title, Model model) {
         return "questions/all-for-picked-topic";
     }
 

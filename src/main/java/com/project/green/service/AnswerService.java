@@ -14,7 +14,9 @@ public interface AnswerService {
 
     AnswerDto getById(int id);
 
-    List<AnswerDto> getAllAnswers();
+    AnswerDto getByQuestionId(int id);
+
+    List<AnswerDto> getAllAnswersToQuestion();
 
     List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId);
 }

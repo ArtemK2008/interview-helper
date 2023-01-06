@@ -25,12 +25,18 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public AnswerDto saveAnswer(AnswerDto answerDto) {
+        if (answerDto == null) {
+            throw new IllegalArgumentException("Answer is null");
+        }
         return answerMapper.toAnswerDto(answerDAO.saveAnswer(answerMapper.toAnswer(answerDto)));
     }
 
     @Override
     @Transactional
     public AnswerDto updateAnswer(AnswerDto answerDto) {
+        if (answerDto == null) {
+            throw new IllegalArgumentException("Answer is null");
+        }
         return answerMapper.toAnswerDto(answerDAO.updateAnswer(answerMapper.toAnswer(answerDto)));
     }
 
@@ -42,12 +48,19 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerDto getById(int id) {
-return answerMapper.toAnswerDto(answerDAO.getById(id).
+        return answerMapper.toAnswerDto(answerDAO.getById(id).
                 orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
     }
 
     @Override
-    public List<AnswerDto> getAllAnswers() {
+    public AnswerDto getByQuestionId(int id) {
+        return answerMapper.toAnswerDto(answerDAO.getByQuestionId(id).
+                orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
+    }
+
+
+    @Override
+    public List<AnswerDto> getAllAnswersToQuestion() {
         return answerDAO.getAllAnswers().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
 
