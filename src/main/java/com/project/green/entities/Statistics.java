@@ -136,11 +136,11 @@ public class Statistics {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Statistics that = (Statistics) o;
-        return personId == that.personId && countOfCorrectAnswers == that.countOfCorrectAnswers && countOfIncorrectAnswers == that.countOfIncorrectAnswers && Objects.equals(person, that.person) && Objects.equals(questionsAnsweredWrong, that.questionsAnsweredWrong);
+        return personId == that.personId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(personId, countOfCorrectAnswers, countOfIncorrectAnswers, person, questionsAnsweredWrong);
+        return Objects.hash(personId);
     }
 }

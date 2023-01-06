@@ -1,7 +1,7 @@
 package com.project.green.service;
 
-import com.project.green.dto.CountQuestionDto;
 import com.project.green.dto.QuestionDto;
+import com.project.green.dto.TopicDto;
 
 import java.util.List;
 
@@ -19,6 +19,6 @@ public interface QuestionService {
 
     List<QuestionDto> findAllByTopicId(int id);
 
-    List<CountQuestionDto> countQuestionsByTopic();
+    List<TopicDto> countQuestionsByTopic();
 
 }
