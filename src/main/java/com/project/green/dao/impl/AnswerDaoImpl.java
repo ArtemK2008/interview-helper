@@ -22,7 +22,7 @@ public class AnswerDaoImpl implements AnswerDao {
     }
 
     @Override
-    public List<Answer> getAllAnswersToQuestion() {
+    public List<Answer> getAllAnswers() {
         return entityManager.createQuery("fROM Answer", Answer.class).getResultList();
     }
 

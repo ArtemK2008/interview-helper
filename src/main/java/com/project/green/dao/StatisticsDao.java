@@ -4,12 +4,13 @@ import com.project.green.entities.Question;
 import com.project.green.entities.Statistics;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface StatisticsDao {
     List<Statistics> findAll();
 
-    Statistics getStatisticsById(int id);
+    Optional<Statistics> getStatisticsById(int id);
 
     Set<Question> getUnansweredQuestionsById(int id);
 

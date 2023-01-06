@@ -9,7 +9,7 @@ public interface AnswerDao {
 
     Answer updateAnswer(Answer answer);
 
-    List<Answer> getAllAnswersToQuestion();
+    List<Answer> getAllAnswers();
 
     List<Answer> getAllAnswersToQuestionInOrderByVoice(int questionId);
 
