@@ -3,7 +3,9 @@ package com.project.green.service.impl;
 import com.project.green.dao.StatisticsDao;
 import com.project.green.dto.QuestionDto;
 import com.project.green.dto.StatisticsDto;
+import com.project.green.entities.Person;
 import com.project.green.entities.Question;
+import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.QuestionMapper;
 import com.project.green.mapper.StatisticsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,8 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
 
     @Override
     public StatisticsDto getById(int id) {
-        return statisticsMapper.toStatisticsDto(statisticsDao.getStatisticsById(id));
+        return statisticsMapper.toStatisticsDto(statisticsDao.getStatisticsById(id).
+                orElseThrow(() -> new NotFoundValueException(Person.class, "id", id)));
     }
 
 
@@ -40,13 +43,13 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
     }
 
     @Override
-    public  void addQuestionToStatistics(int id, Question question) {
-        statisticsDao.addQuestionToStatistics(id, question);
+    public  void addQuestionToStatistics(int id, QuestionDto questionDto) {
+        statisticsDao.addQuestionToStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 
     @Override
-    public void  removeQuestionFromStatistics(int id, Question question) {
-        statisticsDao.removeQuestionFromStatistics(id,question);
+    public void  removeQuestionFromStatistics(int id, QuestionDto questionDto) {
+        statisticsDao.removeQuestionFromStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 
     @Override
@@ -58,15 +61,15 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
     public int getIncorrectCount(int id) {
         return statisticsDao.getIncorrectsCount(id);
     }
-     @Override
-     public void incrementCorrects(int id, int value) {
-        statisticsDao.incrementCorrects(id,value);
-     }
+
+    @Override
+    public void incrementCorrects(int id, int value) {
+        statisticsDao.incrementCorrects(id, value);
+    }
 
     @Override
     public void incrementIncorrect(int id, int value) {
-        statisticsDao.incrementIncorrects(id,value);
+        statisticsDao.incrementIncorrects(id, value);
     }
-
 
 }

@@ -65,8 +65,8 @@ public class Statistics {
 
     @ManyToMany
     @JoinTable(name = "Statistics_to_question",
-            joinColumns = @JoinColumn(name = "question_id"),
-            inverseJoinColumns = @JoinColumn(name = "statistic_id")
+            joinColumns = @JoinColumn(name = "statistic_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
     )
     private Set<Question> questionsAnsweredWrong;
 
