@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AnswerDaoImpl implements AnswerDao {
@@ -20,7 +21,7 @@ public class AnswerDaoImpl implements AnswerDao {
     }
 
     @Override
-    public List<Answer> getAllAnswersToQuestion() {
+    public List<Answer> getAllAnswers() {
         return entityManager.createQuery("fROM Answer", Answer.class).getResultList();
     }
 
@@ -31,8 +32,10 @@ public class AnswerDaoImpl implements AnswerDao {
     }
 
     @Override
-    public Answer getById(int id) {
-        return entityManager.find(Answer.class, id);
+    public Optional<Answer> getById(int id) {
+        return Optional.of(entityManager.createQuery("select a from Answer a where a.id=:id", Answer.class).
+                setParameter("id", id).
+                getSingleResult());
     }
 
     @Override
