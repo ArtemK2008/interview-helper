@@ -1,24 +1,26 @@
 package com.project.green.dao;
 
-import com.project.green.dto.CountQuestionDto;
 import com.project.green.entities.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface QuestionDao {
 
     void save(Question question);
 
-    Question update(Question question);
+    Optional<Question> update(Question question);
 
     void delete(int id);
 
-    Question getById(int id);
+    Optional<Question> getById(int id);
 
-    List<Question> getAll();
+    Optional<Question> getByValue(String value);
 
-    List<Question> getAllByTopicId(int id);
+    Optional<List<Question>> getAll();
 
-    List<CountQuestionDto> countQuestionByTopic();
+    Optional<List<Question>> getAllByTopicId(int id);
+
+    Optional<List<String>> countQuestionByTopic();
 
 }

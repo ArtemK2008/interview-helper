@@ -8,6 +8,7 @@ public class TopicDto {
     private int id;
     private String title;
     private Set<TopicDto> children;
+    private int countQuestion;
 
     public TopicDto() {
     }
@@ -28,6 +29,13 @@ public class TopicDto {
         this.title = title;
     }
 
+    public int getCountQuestion() {
+        return countQuestion;
+    }
+
+    public void setCountQuestion(int countQuestion) {
+        this.countQuestion = countQuestion;
+    }
 
     public Set<TopicDto> getChildren() {
         return children;
