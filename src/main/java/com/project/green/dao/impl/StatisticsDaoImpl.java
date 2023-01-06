@@ -9,6 +9,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -24,13 +25,12 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
 
     @Override
     @Transactional
-    public Statistics getStatisticsById(int id) {
+    public Optional<Statistics> getStatisticsById(int id) {
         EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
+        return Optional.of(entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
                 .setParameter("id", id)
                 .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        return currStatistics;
+                .getSingleResult());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
                 .setParameter("id", id)
                 .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult();
-        return  currStatistics.getCountOfCorrectAnswers();
+        return currStatistics.getCountOfCorrectAnswers();
     }
 
     @Override
@@ -104,7 +104,7 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
                 .setParameter("id", id)
                 .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult();
-        return  currStatistics.getCountOfIncorrectAnswers();
+        return currStatistics.getCountOfIncorrectAnswers();
     }
 
     @Override
