@@ -19,7 +19,7 @@ public interface QuestionDao {
 
     Optional<List<Question>> getAll();
 
-    Optional<List<Question>> getAllByTopicId(int id);
+    Optional<List<Question>> getAllQuestionsByTopicId(int id);
 
     Optional<List<String>> countQuestionByTopic();
 

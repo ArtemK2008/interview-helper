@@ -2,6 +2,7 @@ package com.project.green.service.impl;
 
 import com.project.green.dao.AnswerDao;
 import com.project.green.dto.AnswerDto;
+import com.project.green.entities.Answer;
 import com.project.green.mapper.AnswerMapper;
 import com.project.green.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerDto getById(int id) {
-        return answerMapper.toAnswerDto(answerDAO.getById(id));
+        Answer answer = answerDAO.getById(id).orElse(null);
+        return answerMapper.toAnswerDto(answer);
     }
 
     @Override

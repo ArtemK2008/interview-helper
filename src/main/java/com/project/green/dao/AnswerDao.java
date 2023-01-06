@@ -3,6 +3,7 @@ package com.project.green.dao;
 import com.project.green.entities.Answer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AnswerDao {
 
@@ -12,7 +13,7 @@ public interface AnswerDao {
 
     List<Answer> getAllAnswersToQuestionInOrderByVoice(int questionId);
 
-    Answer getById(int id);
+    Optional<Answer> getById(int id);
 
     void deleteAnswer(int id);
 
