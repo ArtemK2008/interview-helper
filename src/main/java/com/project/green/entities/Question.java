@@ -1,9 +1,5 @@
 package com.project.green.entities;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Question {
@@ -95,17 +94,6 @@ public class Question {
     }
 
     @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", questionText='" + questionText + '\'' +
-                ", topic=" + topic +
-                ", answers=" + answers +
-                ", personsWhoSavedThis=" + personsWhoSavedThis +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -116,5 +104,16 @@ public class Question {
     @Override
     public int hashCode() {
         return Objects.hash(id, questionText, topic, answers, personsWhoSavedThis);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", questionText='" + questionText + '\'' +
+                ", topic=" + topic +
+                ", answers=" + answers +
+                ", personsWhoSavedThis=" + personsWhoSavedThis +
+                '}';
     }
 }

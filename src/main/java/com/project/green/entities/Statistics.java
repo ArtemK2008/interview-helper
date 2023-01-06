@@ -3,9 +3,6 @@ package com.project.green.entities;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import java.util.Objects;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "statistics-entity-graph",
+attributeNodes = {
+        @NamedAttributeNode(value = "questionsAnsweredWrong", subgraph = "questionsAnsweredWrong-subgraphs"),
+        @NamedAttributeNode(value = "person", subgraph = "person-subgraph")
+}
+       ,
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "questionsAnsweredWrong-subgraphs",
+                        attributeNodes =  {
+                                @NamedAttributeNode("topic"),
+                                @NamedAttributeNode("answers"),
+                                @NamedAttributeNode("personsWhoSavedThis")
+                        }
+                ),
+                @NamedSubgraph(
+                        name ="person-subgraph",
+                        attributeNodes = {
+                        @NamedAttributeNode("statistics"),
+                        @NamedAttributeNode("savedQuestions"),
+                        @NamedAttributeNode("roles"),
+                        @NamedAttributeNode("topics")
+                        })
+                }
+ )
 public class Statistics {
 
     @Id

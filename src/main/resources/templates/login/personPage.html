@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+</head>
+<body>
+<h1>Hello, person with id <span th:text="${id}">id</span></h1>
+
+<p style="text-align:center;">
+    <button type="button">
+        <a th:href="@{/Display-Profile}">Show Profile</a>
+    </button>
+</p>
+
+<p >
+    <button type="button">
+        <a th:href="@{/Display-Topics}">Show Topics</a>
+    </button>
+</p>
+
+<div th:replace="footer::footer"></div>
+
+
+</body>
+</html>
