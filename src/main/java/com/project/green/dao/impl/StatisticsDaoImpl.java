@@ -20,7 +20,9 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
 
     @Override
     public List<Statistics> findAll() {
-        return entityManager.createQuery("select s from Statistics as s", Statistics.class).getResultList();
+        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
+        return entityManager.createQuery("select s from Statistics as s", Statistics.class).
+                setHint("javax.persistence.fetchgraph", entityGraph).getResultList();
     }
 
     @Override

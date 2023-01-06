@@ -4,6 +4,7 @@ import com.project.green.dao.AnswerDao;
 import com.project.green.entities.Answer;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -33,14 +34,19 @@ public class AnswerDaoImpl implements AnswerDao {
 
     @Override
     public Optional<Answer> getById(int id) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("answer-entity-graph");
         return Optional.of(entityManager.createQuery("select a from Answer a where a.id=:id", Answer.class).
-                setParameter("id", id).
-                getSingleResult());
+                setParameter("id", id).setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult());
     }
 
     @Override
     public void deleteAnswer(int id) {
-        entityManager.remove(getById(id));
+        EntityGraph entityGraph = entityManager.getEntityGraph("answer-entity-graph");
+        entityManager.createQuery("delete from Answer a where a.id=:id")
+                .setParameter("id", id)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .executeUpdate();
     }
 
     @Override

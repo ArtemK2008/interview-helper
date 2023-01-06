@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.util.List;
@@ -17,6 +20,36 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "question-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "answers", subgraph = "answers-subgraph"),
+                @NamedAttributeNode(value = "personsWhoSavedThis", subgraph = "personsWhoSavedThis-subgraph"),
+                @NamedAttributeNode(value = "topic", subgraph = "topic-subgraph")
+        },
+        subgraphs =
+                {@NamedSubgraph(
+                        name = "answers-subgraph",
+                        attributeNodes =  {
+                                @NamedAttributeNode("question"),
+                        }
+                ),
+                        @NamedSubgraph(
+                                name ="personsWhoSavedThis-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("statistics"),
+                                        @NamedAttributeNode("savedQuestions"),
+                                        @NamedAttributeNode("roles"),
+                                        @NamedAttributeNode("topics")
+                                }),
+                        @NamedSubgraph(
+                                name ="topic-subgraph",
+                                attributeNodes = {
+                                        @NamedAttributeNode("questions"),
+                                        @NamedAttributeNode("children"),
+                                        @NamedAttributeNode("childTopic")
+                                })
+                }
+)
 public class Question {
 
     @Id

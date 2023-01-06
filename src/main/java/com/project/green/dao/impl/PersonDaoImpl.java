@@ -18,19 +18,21 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public List<Person> findAll() {
-        return entityManager.createQuery("select p from Person as p", Person.class).getResultList();
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
+        return entityManager.createQuery("select p from Person as p", Person.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph).getResultList();
     }
 
     @Override
     public Optional<Person> getPersonById(int id) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
         return Optional.of(entityManager.createQuery("select p from Person p where p.id=:id", Person.class).
-                setParameter("id", id).
-                getSingleResult());
+                setParameter("id", id).setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult());
     }
 
     @Override
     public Optional<Person> getPersonByEmail(String email) {
-
         EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
         Person currPerson = entityManager.createQuery("select p from Person p where p.email=:email", Person.class)
                 .setParameter("email", email)
@@ -52,9 +54,10 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void deleteById(int id) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
         entityManager.createQuery("delete from Person p where p.id=:id")
                 .setParameter("id", id)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .executeUpdate();
     }
-
 }

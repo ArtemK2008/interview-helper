@@ -42,7 +42,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerDto getById(int id) {
-        return answerMapper.toAnswerDto(answerDAO.getById(id).
+return answerMapper.toAnswerDto(answerDAO.getById(id).
                 orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
     }
 
