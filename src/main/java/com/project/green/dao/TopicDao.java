@@ -11,10 +11,13 @@ public interface TopicDao {
 
     Optional<Topic> getTopicById(int id);
 
+    Optional<Topic> getByTitle(String title);
+
     void save(Topic topic);
 
     Topic update(Topic topic);
 
     void deleteById(int id);
+
 
 }

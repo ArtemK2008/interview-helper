@@ -26,6 +26,10 @@ public class TopicServiceImpl implements TopicService {
         return mapper.toTopicDto(topicDao.getTopicById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found.")));
     }
 
+    public TopicDto getTopicByTitle(String title) {
+        return mapper.toTopicDto(topicDao.getByTitle(title).orElseThrow(() -> new EntityNotFoundException("Entity not found.")));
+    }
+
     @Override
     public List<TopicDto> getAll() {
         return topicDao.getAll().stream().map(mapper::toTopicDto).collect(Collectors.toList());

@@ -2,6 +2,8 @@ package com.project.green.dao.impl;
 
 import com.project.green.dao.TopicDao;
 import com.project.green.entities.Topic;
+import liquibase.repackaged.net.sf.jsqlparser.statement.select.Top;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,6 +20,12 @@ public class TopicDaoImpl implements TopicDao {
     @Override
     public List<Topic> getAll() {
         return entityManager.createQuery("select t from Topic as t", Topic.class).getResultList();
+    }
+
+    public Optional<Topic> getByTitle(String title) {
+        return Optional.of(entityManager.createQuery("select t from Topic t where t.title=:title", Topic.class).
+                setParameter("title", title).
+                getSingleResult());
     }
 
     @Override
