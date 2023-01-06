@@ -61,14 +61,6 @@ class QuestionControllerTest {
                 .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(EntityNotFoundException.class));
     }
 
-    @Test
-    void getQuestionByTopicId() throws Exception {
-    }
-
-    @Test
-    void countQuestionsByTopic() {
-    }
-
     private QuestionDto createQuestionDtoForTesting(int id, String value, int topicId) {
         QuestionDto questionDto = new QuestionDto();
         questionDto.setId(id);
