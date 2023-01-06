@@ -1,13 +1,15 @@
 package com.project.green.controller;
 
-import com.project.green.dto.CountQuestionDto;
 import com.project.green.dto.QuestionDto;
+import com.project.green.dto.TopicDto;
 import com.project.green.service.QuestionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,7 +36,7 @@ public class QuestionController {
     }
 
     @GetMapping("/count-by-topic")
-    public List<CountQuestionDto> countQuestionsByTopic() {
+    public List<TopicDto> countQuestionsByTopic() {
         return questionService.countQuestionsByTopic();
     }
 }
