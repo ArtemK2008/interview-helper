@@ -16,6 +16,13 @@
     </button>
 </p>
 
+
+<form th:action="@{/delete-question-from-statistics}" th:object="${question}" method="post">
+    <input type="hidden" th:value="${question}" th:attr="name='questionValue'" >
+    <button type="submit">Delete question</button>
+</form>
+
+
 <div th:replace="footer::footer"></div>
 </body>
 </html>

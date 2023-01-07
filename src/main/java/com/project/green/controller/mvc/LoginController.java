@@ -1,11 +1,6 @@
 package com.project.green.controller.mvc;
 
-import com.project.green.dto.AnswerDto;
-import com.project.green.dto.QuestionDto;
 import com.project.green.dto.TopicDto;
-import com.project.green.service.AnswerService;
-import com.project.green.service.QuestionService;
-import com.project.green.service.StatisticsService;
 import com.project.green.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,16 +25,6 @@ public class LoginController {
     @Autowired
     TopicService topicService;
 
-    @Autowired
-    StatisticsService statisticsService;
-
-    @Autowired
-    QuestionService questionService;
-
-    @Autowired
-    AnswerService answerService;
-
-
     @GetMapping("/index")
     public String showSignUpForm(Model model) {
         return "login/index";
@@ -60,46 +45,6 @@ public class LoginController {
         return "login/personPage";
 
     }
-
-    @GetMapping("/Display-Profile")
-    public String goToProfile(HttpSession session, Model model) {
-        String sessionId = (String) session.getAttribute("sessionId");
-        int id = Integer.valueOf(sessionId);
-        int incorrectCount = statisticsService.getIncorrectCount(id);
-        int correctCount = statisticsService.getCorrectCount(id);
-        List<QuestionDto> unansweredQuestions = statisticsService.getUnansweredQuestionsById(id);
-        List<String> questionDescribtion = unansweredQuestions.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
-        model.addAttribute("id", id);
-        model.addAttribute("wrong", incorrectCount);
-        model.addAttribute("correct", correctCount);
-        model.addAttribute("questionList", questionDescribtion);
-        return "login/profile-page";
-    }
-
-    @PostMapping("/display-ununswered-questions")
-    public RedirectView displayUnunswereedQuestion(@RequestParam("question") String question, RedirectAttributes redirectAttributes) {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setContextRelative(true);
-        QuestionDto currQuestion = questionService.getByValue(question);
-        int id = currQuestion.getId();
-        AnswerDto answerClass = answerService.getByQuestionId(id);
-        String answerText = answerClass.getAnswerText();
-        redirectAttributes.addFlashAttribute("question", question);
-        redirectAttributes.addFlashAttribute("answer", answerText);
-        redirectView.setUrl("/questions/display-answer/" + id);
-        return redirectView;
-    }
-
-    @GetMapping("questions/display-answer/{questionId}")
-    public String displayAnswer(@PathVariable("questionId") String questionId) {
-        return "questions/answer-page";
-    }
-
-    @GetMapping("/Display-other-answers")
-    public String displayOtherAnswwers() {
-        return "/not-implemented";
-    }
-
 
     @GetMapping("/Display-Topics")
     public String goToTopics(HttpSession session, Model model) {

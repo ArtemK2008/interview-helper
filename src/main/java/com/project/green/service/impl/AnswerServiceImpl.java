@@ -53,7 +53,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public AnswerDto getByQuestionId(int id) {
+    public AnswerDto getBestByQuestionId(int id) {
         return answerMapper.toAnswerDto(answerDAO.getByQuestionId(id).
                 orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
     }
