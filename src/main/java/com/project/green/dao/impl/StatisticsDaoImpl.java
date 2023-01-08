@@ -29,7 +29,7 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
     @Transactional
     public Optional<Statistics> getStatisticsById(int id) {
         EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        return Optional.of(entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
+        return Optional.ofNullable(entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
                 .setParameter("id", id)
                 .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult());
@@ -38,28 +38,13 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
     @Override
     @Transactional
     public Set<Question> getUnansweredQuestionsById(int id) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        if (currStatistics == null) {
-            return null;
-        }
-        return currStatistics.getQuestionsAnsweredWrong();
+        return getStatisticsById(id).get().getQuestionsAnsweredWrong();
     }
 
     @Override
     @Transactional
     public boolean addQuestionToStatistics(int id, Question question) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        if (currStatistics == null) {
-            return false;
-        }
+        Statistics currStatistics = getStatisticsById(id).get();
         Set<Question> questionsAnsweredWrong = currStatistics.getQuestionsAnsweredWrong();
         if (checkIFQuestionExist(id, question)) {
             return false;
@@ -72,14 +57,7 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
     @Override
     @Transactional
     public boolean removeQuestionFromStatistics(int id, Question question) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        if (currStatistics == null) {
-            return false;
-        }
+        Statistics currStatistics = getStatisticsById(id).get();
         Set<Question> questionsAnsweredWrong = currStatistics.getQuestionsAnsweredWrong();
         if (!checkIFQuestionExist(id, question)) {
             return false;
@@ -91,32 +69,18 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
 
     @Override
     public int getCorrectsCount(int id) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        return currStatistics.getCountOfCorrectAnswers();
+        return getStatisticsById(id).get().getCountOfCorrectAnswers();
     }
 
     @Override
     public int getIncorrectsCount(int id) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
-        return currStatistics.getCountOfIncorrectAnswers();
+        return getStatisticsById(id).get().getCountOfIncorrectAnswers();
     }
 
     @Override
     @Transactional
     public void incrementCorrects(int id, int value) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
+        Statistics currStatistics = getStatisticsById(id).get();
         int beforeCount = currStatistics.getCountOfCorrectAnswers();
         currStatistics.setCountOfCorrectAnswers(beforeCount + value);
         entityManager.merge(currStatistics);
@@ -125,11 +89,7 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
     @Override
     @Transactional
     public void incrementIncorrects(int id, int value) {
-        EntityGraph entityGraph = entityManager.getEntityGraph("statistics-entity-graph");
-        Statistics currStatistics = entityManager.createQuery("select s from Statistics s where s.id = :id", Statistics.class)
-                .setParameter("id", id)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
-                .getSingleResult();
+        Statistics currStatistics = getStatisticsById(id).get();
         int beforeCount = currStatistics.getCountOfIncorrectAnswers();
         currStatistics.setCountOfIncorrectAnswers(beforeCount + value);
         entityManager.merge(currStatistics);
