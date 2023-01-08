@@ -47,12 +47,16 @@ public class ProfileController {
         int correctCount = statisticsService.getCorrectCount(id);
         List<QuestionDto> unansweredQuestions = statisticsService.getUnansweredQuestionsById(id);
         List<String> questionDescribtion = unansweredQuestions.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
+
+        List<QuestionDto> savedQuestionsById = personService.getSavedQuestionsById(id);
+        List<String> savedQuestionsList = savedQuestionsById.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
+
         model.addAttribute("id", id);
         model.addAttribute("email", email);
         model.addAttribute("wrong", incorrectCount);
         model.addAttribute("correct", correctCount);
         model.addAttribute("questionList", questionDescribtion);
-//        model.addAttribute(" savedQuestionList",  null);
+       model.addAttribute("savedQuestionList",  savedQuestionsList);
         return "profile/profile-page";
     }
 
@@ -66,15 +70,36 @@ public class ProfileController {
         AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
-        if(allAnswers != null || bestAnswer != null) {
+        if (allAnswers != null || bestAnswer != null) {
             allAnswers.remove(bestAnswer);
         }
-        request.getSession().setAttribute("answers" , allAnswers);
+        request.getSession().setAttribute("answers", allAnswers);
         redirectAttributes.addFlashAttribute("question", question);
         redirectAttributes.addFlashAttribute("answer", answerText);
         redirectView.setUrl("/profile/display-answer/" + id);
         return redirectView;
     }
+
+    @PostMapping("/display-saved-questions")
+    public RedirectView displaySavedQuestion(@RequestParam("question") String question
+            , RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setContextRelative(true);
+        QuestionDto currQuestion = questionService.getByValue(question);
+        int id = currQuestion.getId();
+        AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
+        String answerText = bestAnswer.getAnswerText();
+        List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
+        if (allAnswers != null || bestAnswer != null) {
+            allAnswers.remove(bestAnswer);
+        }
+        request.getSession().setAttribute("answers", allAnswers);
+        redirectAttributes.addFlashAttribute("question", question);
+        redirectAttributes.addFlashAttribute("answer", answerText);
+        redirectView.setUrl("/profile/display-answer/" + id);
+        return redirectView;
+    }
+
 
     @GetMapping("profile/display-answer/{questionId}")
     public String displayAnswer(@PathVariable("questionId") String questionId) {
@@ -82,23 +107,24 @@ public class ProfileController {
     }
 
     @PostMapping("/delete-question-from-statistics")
-     public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue, HttpSession session) {
+    public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue, HttpSession session) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(questionValue);
-        int statisticsId = Integer.valueOf((String)session.getAttribute("sessionId"));
+        int statisticsId = Integer.valueOf((String) session.getAttribute("sessionId"));
         statisticsService.removeQuestionFromStatistics(statisticsId, currQuestion);
         redirectView.setUrl("/success-page");
-        return  redirectView;
-     }
+        return redirectView;
+    }
 
-     @GetMapping("/success-page")
-     public String showSuccess() {
-      return "success";
-     }
+    @GetMapping("/success-page")
+    public String showSuccess() {
+        return "success";
+    }
+
     @GetMapping("/Display-other-answers")
-    public String displayOtherAnswwers(HttpServletRequest request,Model model) {
-        List<AnswerDto> answers =(List<AnswerDto>) request.getSession().getAttribute("answers");
+    public String displayOtherAnswwers(HttpServletRequest request, Model model) {
+        List<AnswerDto> answers = (List<AnswerDto>) request.getSession().getAttribute("answers");
         request.getSession().removeAttribute("answers");
         model.addAttribute("answers", answers);
         return "/profile/show-other-possible-answers";
