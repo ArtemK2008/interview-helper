@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Questions</title>
+</head>
+<body>
+<h1 style="text-align:center;">Question is  <span th:text ="${questionText}">question</span></h1>
+<br>
+<br>
+
+<form th:action="@{/save-in-favourites}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">add question to favourites </button>
+</form>
+
+<br>
+<form th:action="@{/go-to-next-question}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">next </button>
+</form>
+
+<br>
+<form th:action="@{/go-to-previous-question}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">previous </button>
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

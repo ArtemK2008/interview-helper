@@ -3,6 +3,7 @@ package com.project.green.controller.mvc;
 import com.project.green.dto.AnswerDto;
 import com.project.green.dto.QuestionDto;
 import com.project.green.service.AnswerService;
+import com.project.green.service.PersonService;
 import com.project.green.service.QuestionService;
 import com.project.green.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,24 @@ public class ProfileController {
     @Autowired
     AnswerService answerService;
 
+    @Autowired
+    PersonService personService;
+
     @GetMapping("/Display-Profile")
     public String goToProfile(HttpSession session, Model model) {
         String sessionId = (String) session.getAttribute("sessionId");
         int id = Integer.valueOf(sessionId);
+        String email = personService.getById(id).getEmail();
         int incorrectCount = statisticsService.getIncorrectCount(id);
         int correctCount = statisticsService.getCorrectCount(id);
         List<QuestionDto> unansweredQuestions = statisticsService.getUnansweredQuestionsById(id);
         List<String> questionDescribtion = unansweredQuestions.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
         model.addAttribute("id", id);
+        model.addAttribute("email", email);
         model.addAttribute("wrong", incorrectCount);
         model.addAttribute("correct", correctCount);
         model.addAttribute("questionList", questionDescribtion);
+//        model.addAttribute(" savedQuestionList",  null);
         return "profile/profile-page";
     }
 
