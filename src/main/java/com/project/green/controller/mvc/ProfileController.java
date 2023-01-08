@@ -66,10 +66,10 @@ public class ProfileController {
         AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
-        if(allAnswers != null || bestAnswer != null) {
+        if (allAnswers != null || bestAnswer != null) {
             allAnswers.remove(bestAnswer);
         }
-        request.getSession().setAttribute("answers" , allAnswers);
+        request.getSession().setAttribute("answers", allAnswers);
         redirectAttributes.addFlashAttribute("question", question);
         redirectAttributes.addFlashAttribute("answer", answerText);
         redirectView.setUrl("/profile/display-answer/" + id);
@@ -82,23 +82,24 @@ public class ProfileController {
     }
 
     @PostMapping("/delete-question-from-statistics")
-     public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue, HttpSession session) {
+    public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue, HttpSession session) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(questionValue);
-        int statisticsId = Integer.valueOf((String)session.getAttribute("sessionId"));
+        int statisticsId = Integer.valueOf((String) session.getAttribute("sessionId"));
         statisticsService.removeQuestionFromStatistics(statisticsId, currQuestion);
         redirectView.setUrl("/success-page");
-        return  redirectView;
-     }
+        return redirectView;
+    }
 
-     @GetMapping("/success-page")
-     public String showSuccess() {
-      return "success";
-     }
+    @GetMapping("/success-page")
+    public String showSuccess() {
+        return "success";
+    }
+
     @GetMapping("/Display-other-answers")
-    public String displayOtherAnswwers(HttpServletRequest request,Model model) {
-        List<AnswerDto> answers =(List<AnswerDto>) request.getSession().getAttribute("answers");
+    public String displayOtherAnswwers(HttpServletRequest request, Model model) {
+        List<AnswerDto> answers = (List<AnswerDto>) request.getSession().getAttribute("answers");
         request.getSession().removeAttribute("answers");
         model.addAttribute("answers", answers);
         return "/profile/show-other-possible-answers";
