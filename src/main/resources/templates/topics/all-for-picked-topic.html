@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Questions</title>
+</head>
+<body>
+
+<h1>Questions for  <span th:text ="${topic}">topic</span></h1>
+
+
+<form action="#" method="POST"
+      th:action="@{/display-question-card}" th:object="${allQuestions}">
+
+    <select name="question" th:object="${allQuestions}">
+        <option th:each="question : ${allQuestions}" th:value="${question}"
+                th:name="${question}" th:text="${question}"></option>
+    </select> <input type="submit" value="display question" />
+</form>
+
+
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

@@ -5,9 +5,25 @@
 </head>
 <body>
 <h1>Profile for User with id :  <span th:text="${id}">id</span></h1>
+<h1>Your email is:  <span th:text="${email}">email</span></h1>
+<br>
 
 <p>You have answered :  <span th:text="${correct}">correct</span> questions correctly</p>
 <p>You have answered :  <span th:text="${wrong}">correct</span> questions wrong</p>
+
+<br>
+<!--<h3>Those questions you have saved for yourself</h3>-->
+<!--<form action="#" method="POST"-->
+<!--      th:action="@{/display-saved-questions}" th:object="${savedQuestionList}">-->
+
+<!--    <select name="question" th:object="${questionList}">-->
+<!--        <option th:each="question : ${questionList}" th:value="${question}"-->
+<!--                th:name="${question}" th:text="${question}"></option>-->
+<!--    </select> <input type="submit" value="display question" />-->
+<!--</form>-->
+<!--<br>-->
+
+<h3>Those questions you have answered incorrectly</h3>
 
 <div>
 <form action="#" method="POST"
