@@ -45,8 +45,8 @@ public class QuestionDaoImpl implements QuestionDao {
 
     public Optional<Question> getByValue(String value) {
         EntityGraph entityGraph = entityManager.getEntityGraph("question-entity-graph");
-        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = ?1", Question.class).
-                setParameter(1, value).setHint("javax.persistence.fetchgraph", entityGraph)
+        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = :value", Question.class).
+                setParameter("value", value).setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult());
     }
 

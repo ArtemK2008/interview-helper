@@ -1,7 +1,6 @@
 package com.project.green.controller.mvc;
 
 import com.project.green.dto.TopicDto;
-import com.project.green.service.StatisticsService;
 import com.project.green.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,10 +25,6 @@ public class LoginController {
     @Autowired
     TopicService topicService;
 
-    @Autowired
-    StatisticsService statisticsService;
-
-
     @GetMapping("/index")
     public String showSignUpForm(Model model) {
         return "login/index";
@@ -51,23 +46,11 @@ public class LoginController {
 
     }
 
-    @GetMapping("/Display-Profile")
-    public String goToProfile(HttpSession session, Model model) {
-        String sessionId = (String)session.getAttribute("sessionId");
-        int id = Integer.valueOf(sessionId);
-        int incorrectCount = statisticsService.getIncorrectCount(id);
-        int correctCount = statisticsService.getCorrectCount(id);
-        model.addAttribute("id", id);
-        model.addAttribute("wrong", id);
-        model.addAttribute("correct", id);
-
-        return "login/profile-page";
-    }
     @GetMapping("/Display-Topics")
     public String goToTopics(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("sessionId"));
         List<TopicDto> allTopics = topicService.getAll();
-        List<String> titles = allTopics.stream().map(a->a.getTitle()).collect(Collectors.toList());
+        List<String> titles = allTopics.stream().map(a -> a.getTitle()).collect(Collectors.toList());
         model.addAttribute("topicList", titles);
         return "questions/topic-page";
     }
@@ -77,14 +60,13 @@ public class LoginController {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         TopicDto pickedTopic = topicService.getTopicByTitle(topic);
-       // pickedTopic.getQ
         redirectAttributes.addFlashAttribute("topic", pickedTopic.getTitle());
         redirectView.setUrl("/questions/" + pickedTopic.getTitle());
         return redirectView;
     }
 
     @GetMapping("/questions/{title}")
-    public String displayQuestionList (@PathVariable("title") String title, Model model) {
+    public String displayQuestionList(@PathVariable("title") String title, Model model) {
         return "questions/all-for-picked-topic";
     }
 

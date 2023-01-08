@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Topics</title>
+</head>
+<body>
+<h1>Question was  <span th:text ="${question}">question</span></h1>
+<br>
+<br>
+
+<h3>Its best Answer : <span th:text ="${answer}">answer</span> </h3>
+
+<p >
+    <button type="button">
+        <a th:href="@{/Display-other-answers}">Show other Answers</a>
+    </button>
+</p>
+
+
+<form th:action="@{/delete-question-from-statistics}" th:object="${question}" method="post">
+    <input type="hidden" th:value="${question}" th:attr="name='questionValue'" >
+    <button type="submit">Delete question</button>
+</form>
+
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

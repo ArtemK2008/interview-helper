@@ -41,6 +41,17 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
+    public QuestionDto getByValue(String value) {
+        Optional<Question> question = questionDao.getByValue(value);
+        if(question.isPresent()) {
+            return questionMapper.toQuestionDto(question.get());
+        }else{
+            throw new EntityNotFoundException("Question not found");
+        }
+    }
+
+    @Transactional
+    @Override
     public QuestionDto update(QuestionDto questionDto) {
         if (questionDao.getById(questionDto.getId()).isPresent()) {
             return questionMapper.toQuestionDto(questionDao.update(questionMapper.toQuestionEntity(questionDto)).get());
