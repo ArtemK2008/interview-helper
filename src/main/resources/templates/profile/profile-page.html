@@ -35,6 +35,17 @@
     </select> <input type="submit" value="display question" />
 </form>
 
+<br>
+    <h3>Those questions you have saved for yourself</h3>
+    <form action="#" method="POST"
+          th:action="@{/display-saved-questions}" th:object="${savedQuestionList}">
+
+        <select name="question" th:object="${savedQuestionList}">
+            <option th:each="question : ${savedQuestionList}" th:value="${question}"
+                    th:name="${question}" th:text="${question}"></option>
+        </select> <input type="submit" value="display questions" />
+    </form>
+
 
 </div>
 

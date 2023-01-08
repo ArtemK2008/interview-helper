@@ -3,13 +3,14 @@ package com.project.green.service.impl;
 import com.project.green.dao.PersonDao;
 import com.project.green.dao.TopicDao;
 import com.project.green.dto.PersonDto;
+import com.project.green.dto.QuestionDto;
 import com.project.green.entities.Person;
 import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.PersonMapper;
+import com.project.green.mapper.QuestionMapper;
 import com.project.green.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,9 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonMapper mapper;
 
-    @Transactional
+    @Autowired
+    private QuestionMapper questionMapper;
+
     @Override
     public void save(PersonDto personDto) {
         Person person = mapper.toPerson(personDto);
@@ -51,15 +54,24 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
-    @Transactional
     @Override
     public PersonDto update(PersonDto personDto) {
         return mapper.toPersonDto(personDao.update(mapper.toPerson(personDto)));
     }
 
-    @Transactional
     @Override
     public void deleteById(int id) {
         personDao.deleteById(id);
     }
+
+    @Override
+    public List<QuestionDto> getSavedQuestionsById(int id) {
+        return personDao.getSavedQuestionsById(id).stream().map(questionMapper::toQuestionDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public  void addQuestionToFavourites(int id, QuestionDto questionDto) {
+        personDao.addQuestionToFavourites(id, questionMapper.toQuestionEntity(questionDto));
+    }
+
 }
