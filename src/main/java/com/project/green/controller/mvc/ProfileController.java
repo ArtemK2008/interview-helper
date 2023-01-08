@@ -75,11 +75,12 @@ public class ProfileController {
     }
 
     @PostMapping("/delete-question-from-statistics")
-     public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue) {
+     public RedirectView deleteQuestionFromStatistics(@RequestParam("questionValue") String questionValue, HttpSession session) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(questionValue);
-        questionService.deleteById(currQuestion.getId());
+        int statisticsId = Integer.valueOf((String)session.getAttribute("sessionId"));
+        statisticsService.removeQuestionFromStatistics(statisticsId, currQuestion);
         redirectView.setUrl("/success-page");
         return  redirectView;
      }
