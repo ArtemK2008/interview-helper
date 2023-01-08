@@ -1,5 +1,7 @@
 package com.project.green.dto;
 
+import com.project.green.entities.Question;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,7 +12,7 @@ public class PersonDto {
     private String email;
     private String password;
     private int statisticsId;
-
+    private Set<Question> savedQuestions;
     private Set<TopicDto> topics;
 
     public PersonDto() {
@@ -54,6 +56,14 @@ public class PersonDto {
 
     public void setStatisticsId(int statisticsId) {
         this.statisticsId = statisticsId;
+    }
+
+    public Set<Question> getSavedQuestions() {
+        return savedQuestions;
+    }
+
+    public void setSavedQuestions(Set<Question> savedQuestions) {
+        this.savedQuestions = savedQuestions;
     }
 
     public Set<TopicDto> getTopics() {
