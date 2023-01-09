@@ -2,12 +2,15 @@ package com.project.green.service.impl;
 
 import com.project.green.dao.QuestionDao;
 import com.project.green.dao.TopicDao;
+import com.project.green.dto.AnswerDto;
 import com.project.green.dto.QuestionDto;
 import com.project.green.dto.TopicDto;
+import com.project.green.entities.Answer;
 import com.project.green.entities.Question;
 import com.project.green.entities.Topic;
 import com.project.green.exception.EntityNotFoundException;
 import com.project.green.mapper.QuestionMapper;
+import com.project.green.service.AnswerService;
 import com.project.green.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private AnswerService answerService;
 
     @Transactional
     @Override
@@ -117,5 +123,22 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new EntityNotFoundException("Topic is not present");
         }
+    }
+
+    @Override
+    public boolean addAnswerToQuestion(int id, String answerText) {
+        List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
+        QuestionDto question = getById(id);
+
+        if (allAnswers.stream().map(AnswerDto::getAnswerText).collect(Collectors.toSet()).contains(answerText)) {
+            return  false;
+        }
+        Answer answer = new Answer();
+        answer.setVoiceCount(0);
+        answer.setAnswerText(answerText);
+        answer.setDefault(false);
+        answer.setQuestion(questionMapper.toQuestionEntity(question));
+        questionDao.addAnswerToQuestion(id, answer);
+        return  true;
     }
 }

@@ -3,6 +3,7 @@ package com.project.green.service.impl;
 import com.project.green.dao.AnswerDao;
 import com.project.green.dto.AnswerDto;
 import com.project.green.entities.Answer;
+import com.project.green.exception.EntityNotFoundException;
 import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.AnswerMapper;
 import com.project.green.service.AnswerService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +54,17 @@ public class AnswerServiceImpl implements AnswerService {
                 orElseThrow(() -> new NotFoundValueException(Answer.class, "id", id)));
     }
 
+    @Transactional
+    @Override
+    public AnswerDto getByValue(String value) {
+        Optional<Answer> answer = answerDAO.getByValue(value);
+        if(answer.isPresent()) {
+            return answerMapper.toAnswerDto(answer.get());
+        }else{
+            throw new EntityNotFoundException("Answer not found");
+        }
+    }
+
     @Override
     public AnswerDto getBestByQuestionId(int id) {
         return answerMapper.toAnswerDto(answerDAO.getByQuestionId(id).
@@ -60,7 +73,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 
     @Override
-    public List<AnswerDto> getAllAnswersToQuestion() {
+    public List<AnswerDto> getAllExistingAnswers() {
         return answerDAO.getAllAnswers().stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
 
@@ -68,4 +81,26 @@ public class AnswerServiceImpl implements AnswerService {
     public List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId) {
         return answerDAO.getAllAnswersToQuestionInOrderByVoice(questionId).stream().map(answerMapper::toAnswerDto).collect(Collectors.toList());
     }
+
+    @Override
+    public void incrementVoiceCount(int id, int value) {
+        answerDAO.incrementVoiceCount(id,value);
+    }
+
+    @Override
+    public int getAnswerVoiceCountById(int id) {
+        return answerDAO.getAnswerVoiceCountById(id);
+    }
+
+    @Override
+    public boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,AnswerDto answerDto) {
+       return answerDAO.checkIfAnswersVoiceCountBiggerThenDefault(questionId,answerMapper.toAnswer(answerDto));
+    }
+
+    @Override
+    public void swapDefaultForNewOne(int questionId, AnswerDto answerDto) {
+        answerDAO.swapDefaultForNewOne(questionId, answerMapper.toAnswer(answerDto));
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.project.green.dao;
 
+import com.project.green.entities.Answer;
 import com.project.green.entities.Question;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface QuestionDao {
 
     Optional<List<String>> countQuestionByTopic();
 
+    void addAnswerToQuestion(int id, Answer answer);
 }

@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Answer added</title>
+</head>
+<body>
+<h1>You have added answer for question <span th:text="${questionValue}">question</span> </h1>
+<br>
+
+<form th:action="@{/display-answer-card}" th:object="${questionValue}" method="post">
+    <input type="hidden" th:value="${questionValue}" th:attr="name='questionValue'" >
+    <button type="submit">Back to Answers </button>
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

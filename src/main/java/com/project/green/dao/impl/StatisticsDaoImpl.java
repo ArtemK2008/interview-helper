@@ -98,9 +98,6 @@ public class StatisticsDaoImpl implements com.project.green.dao.StatisticsDao {
 
     private boolean checkIFQuestionExist(int id, Question question) {
         Set<Question> unansweredQuestionsById = getUnansweredQuestionsById(id);
-        if (unansweredQuestionsById.contains(question)) {
-            return true;
-        }
-        return false;
+        return unansweredQuestionsById.contains(question);
     }
 }
