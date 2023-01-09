@@ -14,9 +14,15 @@ public interface AnswerService {
 
     AnswerDto getById(int id);
 
+    public AnswerDto getByValue(String value);
+
     AnswerDto getBestByQuestionId(int id);
 
-    List<AnswerDto> getAllAnswersToQuestion();
+    List<AnswerDto> getAllExistingAnswers();
 
     List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId);
+
+    void incrementVoiceCount(int id, int value);
+
+    int getAnswerVoiceCountById(int id);
 }

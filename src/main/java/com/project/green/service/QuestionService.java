@@ -23,4 +23,6 @@ public interface QuestionService {
 
     List<TopicDto> countQuestionsByTopic();
 
+    boolean addAnswerToQuestion(int id, String answerText);
+
 }
