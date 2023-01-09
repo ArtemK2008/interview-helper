@@ -84,12 +84,23 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public void incrementVoiceCount(int id, int value) {
-        answerDAO.incrementVoiceCount(id,1);
+        answerDAO.incrementVoiceCount(id,value);
     }
 
     @Override
     public int getAnswerVoiceCountById(int id) {
         return answerDAO.getAnswerVoiceCountById(id);
     }
+
+    @Override
+    public boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,AnswerDto answerDto) {
+       return answerDAO.checkIfAnswersVoiceCountBiggerThenDefault(questionId,answerMapper.toAnswer(answerDto));
+    }
+
+    @Override
+    public void swapDefaultForNewOne(int questionId, AnswerDto answerDto) {
+        answerDAO.swapDefaultForNewOne(questionId, answerMapper.toAnswer(answerDto));
+    }
+
 
 }

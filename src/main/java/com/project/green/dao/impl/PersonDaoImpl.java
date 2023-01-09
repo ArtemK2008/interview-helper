@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -77,21 +78,25 @@ public class PersonDaoImpl implements PersonDao {
     public boolean addQuestionToFavourites(int id, Question question) {
         Person currPerson = getPersonById(id).get();
         Set<Question> questionsSavedAsFavourites = currPerson.getSavedQuestions();
-        if (checkIFQuestionExist(id, question)) {
-            return false;
+        if (!checkIFQuestionExist(id, question)) {
+            questionsSavedAsFavourites.add(question);
+            List<Person> personsWhoSavedThis;
+            personsWhoSavedThis = question.getPersonsWhoSavedThis();
+            if(personsWhoSavedThis == null) {
+                personsWhoSavedThis = new ArrayList<>();
+            }
+            personsWhoSavedThis.add(currPerson);
+            question.setPersonsWhoSavedThis(personsWhoSavedThis);
+            currPerson.setSavedQuestions(questionsSavedAsFavourites);
+            entityManager.merge(question);
+            entityManager.merge(currPerson);
+            return  true;
         }
-        questionsSavedAsFavourites.add(question);
-        entityManager.merge(currPerson);
-        System.out.println("added");
-        return true;
+        return false;
     }
-
 
     private boolean checkIFQuestionExist(int id, Question question) {
         Set<Question> questionsSavedAsFavourites = getSavedQuestionsById(id);
-        if (questionsSavedAsFavourites.contains(question)) {
-            return true;
-        }
-        return false;
+        return questionsSavedAsFavourites.contains(question);
     }
 }

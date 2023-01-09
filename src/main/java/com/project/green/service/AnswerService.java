@@ -25,4 +25,8 @@ public interface AnswerService {
     void incrementVoiceCount(int id, int value);
 
     int getAnswerVoiceCountById(int id);
+
+    boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,AnswerDto answerDto);
+
+    void swapDefaultForNewOne(int questionId, AnswerDto answerDto);
 }

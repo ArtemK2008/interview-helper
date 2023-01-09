@@ -130,7 +130,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
         QuestionDto question = getById(id);
 
-        if (allAnswers.stream().map(a->a.getAnswerText()).collect(Collectors.toSet()).contains(answerText)) {
+        if (allAnswers.stream().map(AnswerDto::getAnswerText).collect(Collectors.toSet()).contains(answerText)) {
             return  false;
         }
         Answer answer = new Answer();

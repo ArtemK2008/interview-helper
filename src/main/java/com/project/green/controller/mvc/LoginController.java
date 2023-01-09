@@ -17,7 +17,7 @@ public class LoginController {
 
 
     @GetMapping("/index")
-    public String showSignUpForm(Model model) {
+    public String showSignUpForm() {
         return "login/index";
     }
 

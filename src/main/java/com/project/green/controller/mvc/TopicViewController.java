@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
@@ -33,13 +32,13 @@ public class TopicViewController {
     public String goToTopics(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("sessionId"));
         List<TopicDto> allTopics = topicService.getAll();
-        List<String> titles = allTopics.stream().map(a -> a.getTitle()).collect(Collectors.toList());
+        List<String> titles = allTopics.stream().map(TopicDto::getTitle).collect(Collectors.toList());
         model.addAttribute("topicList", titles);
         return "topics/topic-page";
     }
 
     @PostMapping("/display-topics-content")
-    public RedirectView displayTopicsQuestions(@RequestParam("topic") String topic, RedirectAttributes redirectAttributes) {
+    public RedirectView displayTopicsQuestions(@RequestParam("topic") String topic) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         TopicDto pickedTopic = topicService.getTopicByTitle(topic);
@@ -56,13 +55,13 @@ public class TopicViewController {
     @GetMapping("/topics/display-sub-topics/{title}")
     public String displaySubTopicList(@PathVariable("title") String title, Model model) {
         TopicDto pickedTopic = topicService.getTopicByTitle(title);
-        List<String> childTitles = pickedTopic.getChildren().stream().map(c -> c.getTitle()).collect(Collectors.toList());
+        List<String> childTitles = pickedTopic.getChildren().stream().map(TopicDto::getTitle).collect(Collectors.toList());
         model.addAttribute("subTopics", childTitles);
         return "topics/all-subtopics-for-picked-topic";
     }
 
     @PostMapping("/display-sub-topics-content")
-    public  RedirectView displaySubTopicsQuestions(@RequestParam("topic") String topic, RedirectAttributes redirectAttributes) {
+    public  RedirectView displaySubTopicsQuestions(@RequestParam("topic") String topic) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         TopicDto pickedTopic = topicService.getTopicByTitle(topic);

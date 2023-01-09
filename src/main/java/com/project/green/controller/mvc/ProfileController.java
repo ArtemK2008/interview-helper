@@ -41,15 +41,15 @@ public class ProfileController {
     @GetMapping("/Display-Profile")
     public String goToProfile(HttpSession session, Model model) {
         String sessionId = (String) session.getAttribute("sessionId");
-        int id = Integer.valueOf(sessionId);
+        int id = Integer.parseInt(sessionId);
         String email = personService.getById(id).getEmail();
         int incorrectCount = statisticsService.getIncorrectCount(id);
         int correctCount = statisticsService.getCorrectCount(id);
         List<QuestionDto> unansweredQuestions = statisticsService.getUnansweredQuestionsById(id);
-        List<String> questionDescribtion = unansweredQuestions.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
+        List<String> questionDescribtion = unansweredQuestions.stream().map(QuestionDto::getQuestionValue).collect(Collectors.toList());
 
         List<QuestionDto> savedQuestionsById = personService.getSavedQuestionsById(id);
-        List<String> savedQuestionsList = savedQuestionsById.stream().map(q -> q.getQuestionValue()).collect(Collectors.toList());
+        List<String> savedQuestionsList = savedQuestionsById.stream().map(QuestionDto::getQuestionValue).collect(Collectors.toList());
 
         model.addAttribute("id", id);
         model.addAttribute("email", email);
@@ -70,7 +70,7 @@ public class ProfileController {
         AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
-        if (allAnswers != null || bestAnswer != null) {
+        if (!allAnswers.isEmpty() && bestAnswer != null) {
             allAnswers.remove(bestAnswer);
         }
         request.getSession().setAttribute("answers", allAnswers);
@@ -90,7 +90,7 @@ public class ProfileController {
         AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
-        if (allAnswers != null || bestAnswer != null) {
+        if (!allAnswers.isEmpty() && bestAnswer != null) {
             allAnswers.remove(bestAnswer);
         }
         request.getSession().setAttribute("answers", allAnswers);
@@ -111,7 +111,7 @@ public class ProfileController {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(questionValue);
-        int statisticsId = Integer.valueOf((String) session.getAttribute("sessionId"));
+        int statisticsId = Integer.parseInt((String) session.getAttribute("sessionId"));
         statisticsService.removeQuestionFromStatistics(statisticsId, currQuestion);
         redirectView.setUrl("/success-page");
         return redirectView;

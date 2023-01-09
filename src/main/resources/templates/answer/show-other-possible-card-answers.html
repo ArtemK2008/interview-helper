@@ -17,6 +17,12 @@
             </form>
         </td>
         <td th:text="${answer.voiceCount}"></td>
+        <td>
+        <form th:action="@{/vote-for-answer-by-hundred}" th:object="${answer.answerText}" method="post">
+            <input type="hidden" th:value="${answer.answerText}" th:attr="name='answer'" >
+            <button type="submit">vote by 100 </button>
+        </form>
+        </td>
     </tr>
 </table>
 <br>

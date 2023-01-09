@@ -27,4 +27,8 @@ public interface AnswerDao {
 
     int getAnswerVoiceCountById(int id);
 
+    boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,Answer answer);
+
+    void swapDefaultForNewOne(int questionId,Answer answer);
+
 }

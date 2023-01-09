@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,26 +37,33 @@ public class AnswerControllerMvc {
                                           HttpServletRequest request, RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
+        request.getSession().setAttribute("lastQuestion", question);
 
         QuestionDto currQuestion = questionService.getByValue(question);
         int id = currQuestion.getId();
-        AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
+        AnswerDto bestAnswer;
+        try {
+             bestAnswer = answerService.getBestByQuestionId(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("lastQuestion", question);
+            redirectView.setUrl("/answer/insert-your-answer-for-question");
+            return redirectView;
+        }
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
-        if (allAnswers != null || bestAnswer != null) {
+        if (!allAnswers.isEmpty() && bestAnswer != null) {
             allAnswers.remove(bestAnswer);
         }
         request.getSession().setAttribute("answers", allAnswers);
         redirectAttributes.addFlashAttribute("question", question);
         redirectAttributes.addFlashAttribute("answer", answerText);
-        request.getSession().setAttribute("lastQuestion", question);
 
         redirectView.setUrl("/questions/display-answer/" + id);
         return redirectView;
     }
 
     @GetMapping("questions/display-answer/{questionId}")
-    public String displayAnswer(@PathVariable("questionId") String questionId) {
+    public String displayAnswer() {
         return "answer/answer-page-card";
     }
 
@@ -70,6 +76,21 @@ public class AnswerControllerMvc {
         model.addAttribute("answers", answers);
         model.addAttribute("lastQuestion", lastQuestion);
         return "/answer/show-other-possible-card-answers";
+    }
+
+    @PostMapping("/vote-for-answer-by-hundred")
+    public RedirectView voteForAnswerByHundred(@RequestParam("answer") String answer,HttpSession session) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setContextRelative(true);
+        AnswerDto currAnswer = answerService.getByValue(answer);
+        String currQuestion = (String)session.getAttribute("lastQuestion");
+        int questionId = questionService.getByValue(currQuestion).getId();
+        answerService.incrementVoiceCount(currAnswer.getId(), 100);
+        if(answerService.checkIfAnswersVoiceCountBiggerThenDefault(questionId,currAnswer)) {
+            answerService.swapDefaultForNewOne(questionId,currAnswer);
+        }
+        redirectView.setUrl("/thanks-for-vote");
+        return redirectView;
     }
 
     @PostMapping("/vote-for-answer")
@@ -93,7 +114,7 @@ public class AnswerControllerMvc {
         }
         if (!peopleAlreadyVotedForAnswer.containsKey(sessionId)) {
             handleVoteWhenAnswerWasNotVoted(answer, session, redirectAttributes, redirectView, sessionId, peopleAlreadyVotedForAnswer, currAnswer, answerDtos);
-        } else if (!answerDtos.stream().map(a -> a.getAnswerText()).collect(Collectors.toList()).contains(currAnswer.getAnswerText())) {
+        } else if (!answerDtos.stream().map(AnswerDto::getAnswerText).collect(Collectors.toList()).contains(currAnswer.getAnswerText())) {
             handleVoteWhenAnswerWasNotVoted(answer, session, redirectAttributes, redirectView, sessionId, peopleAlreadyVotedForAnswer, currAnswer, answerDtos);
         } else {
             redirectView.setUrl("/answer/already-voted");
@@ -107,6 +128,11 @@ public class AnswerControllerMvc {
                                                  String sessionId, Map<String, List<AnswerDto>> peopleAlreadyVotedForAnswer, AnswerDto currAnswer,
                                                  List<AnswerDto> answerDtos) {
         answerService.incrementVoiceCount(currAnswer.getId(), 1);
+        String currQuestion = (String)session.getAttribute("lastQuestion");
+        int questionId = questionService.getByValue(currQuestion).getId();
+        if(answerService.checkIfAnswersVoiceCountBiggerThenDefault(questionId,currAnswer)) {
+            answerService.swapDefaultForNewOne(questionId,currAnswer);
+        }
         answerDtos.add(currAnswer);
         peopleAlreadyVotedForAnswer.put(sessionId, answerDtos);
         session.setAttribute("ids of voted for answer", peopleAlreadyVotedForAnswer);
@@ -127,30 +153,38 @@ public class AnswerControllerMvc {
 
     @PostMapping("/propose-your-answer")
     public RedirectView handleProposeAnswer(@RequestParam("lastQuestion") String lastQuestion,
-                                            HttpSession session, RedirectAttributes redirectAttributes) {
+                                             RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
-        System.out.println(lastQuestion);
         redirectAttributes.addFlashAttribute("lastQuestion", lastQuestion);
         redirectView.setUrl("/answer/insert-your-answer-for-question");
         return redirectView;
     }
 
     @GetMapping("/answer/insert-your-answer-for-question")
-    public String proposeAnswer(Model model) {
+    public String proposeAnswer() {
         return "answer/insert-your-answer-page";
     }
 
     @PostMapping("/insert-proposed-answer")
     public RedirectView handleProposedAnswerInsertion(@RequestParam("questionValue") String questionValue,
                                                       @RequestParam("answerText") String answerText,
-                                                      HttpSession session, RedirectAttributes redirectAttributes) {
+                                                      RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView();
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(questionValue);
 
         if (questionService.addAnswerToQuestion(currQuestion.getId(), answerText)) {
-            redirectView.setUrl("/answer/insert-was-successfull");
+            QuestionDto questionDto = questionService.getByValue(questionValue);
+            try {
+                answerService.getBestByQuestionId(questionDto.getId());
+            } catch (Exception e) {
+                AnswerDto currAnswer = answerService.getByValue(answerText);
+                currAnswer.setDefault(true);
+                answerService.updateAnswer(currAnswer);
+            } finally {
+                redirectView.setUrl("/answer/insert-was-successfull");
+            }
         } else {
             redirectView.setUrl("/answer/insert-failed");
         }
@@ -159,12 +193,12 @@ public class AnswerControllerMvc {
     }
 
     @GetMapping("/answer/insert-was-successfull")
-    public String succsessfullAnswerInsert(Model model) {
+    public String succsessfullAnswerInsert() {
         return "answer/answer-insert-completed";
     }
 
     @GetMapping("/answer/insert-failed")
-    public String unsuccsessfullAnswerInsert(Model model) {
+    public String unsuccsessfullAnswerInsert() {
         return "answer/answer-insert-failed";
     }
 }

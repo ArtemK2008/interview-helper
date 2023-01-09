@@ -4,7 +4,6 @@ import com.project.green.dao.StatisticsDao;
 import com.project.green.dto.QuestionDto;
 import com.project.green.dto.StatisticsDto;
 import com.project.green.entities.Person;
-import com.project.green.entities.Question;
 import com.project.green.exception.NotFoundValueException;
 import com.project.green.mapper.QuestionMapper;
 import com.project.green.mapper.StatisticsMapper;
@@ -43,12 +42,12 @@ public class StatisticsServiceImpl implements com.project.green.service.Statisti
     }
 
     @Override
-    public  void addQuestionToStatistics(int id, QuestionDto questionDto) {
+    public void addQuestionToStatistics(int id, QuestionDto questionDto) {
         statisticsDao.addQuestionToStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 
     @Override
-    public void  removeQuestionFromStatistics(int id, QuestionDto questionDto) {
+    public void removeQuestionFromStatistics(int id, QuestionDto questionDto) {
         statisticsDao.removeQuestionFromStatistics(id, questionMapper.toQuestionEntity(questionDto));
     }
 

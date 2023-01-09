@@ -88,4 +88,26 @@ public class AnswerDaoImpl implements AnswerDao {
         entityManager.merge(answer.get());
     }
 
+    @Transactional
+    public boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,Answer answer) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("answer-entity-graph");
+        Optional<Answer> defaulAnswer = Optional.of(entityManager.createQuery("select a from Answer a where a.question.id=:id " +
+                        "and a.isDefault=:bool ", Answer.class).setParameter("id", questionId).
+                setParameter("bool", true).setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult());
+        return answer.getVoiceCount() > defaulAnswer.get().getVoiceCount();
+    }
+
+    @Transactional
+    public void swapDefaultForNewOne(int questionId,Answer answer) {
+        EntityGraph entityGraph = entityManager.getEntityGraph("answer-entity-graph");
+        Optional<Answer> defaulAnswer = Optional.of(entityManager.createQuery("select a from Answer a where a.question.id=:id " +
+                        "and a.isDefault=:bool ", Answer.class).setParameter("id", questionId).
+                setParameter("bool", true).setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult());
+        defaulAnswer.get().setDefault(false);
+        answer.setDefault(true);
+        entityManager.merge(answer);
+    }
+
 }
