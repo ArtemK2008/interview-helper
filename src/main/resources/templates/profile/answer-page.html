@@ -17,9 +17,17 @@
 </p>
 
 
-<form th:action="@{/delete-question-from-statistics}" th:object="${question}" method="post">
-    <input type="hidden" th:value="${question}" th:attr="name='questionValue'" >
-    <button type="submit">Delete question</button>
+<div th:if="${fromUnunswered != null}">
+    <form th:action="@{/delete-question-from-statistics}" th:object="${question}" method="post">
+        <input type="hidden" th:value="${question}" th:attr="name='questionValue'" >
+        <button type="submit">Delete question</button>
+    </form>
+</div>
+
+<br>
+<form th:action="@{/back-to-profile-page}" th:object="${question}" method="post">
+    <input type="hidden" th:value="${question}" th:attr="name='question'" >
+    <button type="submit">Back to profile </button>
 </form>
 
 

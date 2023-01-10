@@ -67,7 +67,15 @@ public class ProfileController {
         redirectView.setContextRelative(true);
         QuestionDto currQuestion = questionService.getByValue(question);
         int id = currQuestion.getId();
-        AnswerDto bestAnswer = answerService.getBestByQuestionId(id);
+        AnswerDto bestAnswer;
+        try{
+             bestAnswer = answerService.getBestByQuestionId(id);
+        } catch (Exception e) {
+            redirectView.setUrl("/profile/no-answers-found");
+            redirectAttributes.addFlashAttribute("question", question);
+            return redirectView;
+        }
+         bestAnswer = answerService.getBestByQuestionId(id);
         String answerText = bestAnswer.getAnswerText();
         List<AnswerDto> allAnswers = answerService.getAllAnswersToQuestionInOrderByVoice(id);
         if (!allAnswers.isEmpty() && bestAnswer != null) {
@@ -76,6 +84,7 @@ public class ProfileController {
         request.getSession().setAttribute("answers", allAnswers);
         redirectAttributes.addFlashAttribute("question", question);
         redirectAttributes.addFlashAttribute("answer", answerText);
+        redirectAttributes.addFlashAttribute("fromUnunswered", true);
         redirectView.setUrl("/profile/display-answer/" + id);
         return redirectView;
     }
@@ -128,5 +137,18 @@ public class ProfileController {
         request.getSession().removeAttribute("answers");
         model.addAttribute("answers", answers);
         return "/profile/show-other-possible-answers";
+    }
+
+    @PostMapping("/back-to-profile-page")
+    public RedirectView handleBackToProfile() {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setContextRelative(true);
+        redirectView.setUrl("/Display-Profile");
+        return redirectView;
+    }
+
+    @GetMapping("/profile/no-answers-found")
+    public String handleNoBestAnswer() {
+        return "/profile/show-no-answers-page";
     }
 }

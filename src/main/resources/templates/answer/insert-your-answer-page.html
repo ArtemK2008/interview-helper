@@ -13,8 +13,14 @@
     <input type="text" th:attr="name='answerText'" placeholder="insert your answer"/>
     <input type="hidden" th:value="${lastQuestion}" th:attr="name='questionValue'" >
     <input type="submit" value="Add answer" />
-
 </form>
+
+<br>
+<form th:action="@{/display-question-card}" th:object="${lastQuestion}" method="post">
+    <input type="hidden" th:value="${lastQuestion}" th:attr="name='question'" >
+    <button type="submit">Back to Question </button>
+</form>
+
 
 <div th:replace="footer::footer"></div>
 </body>
