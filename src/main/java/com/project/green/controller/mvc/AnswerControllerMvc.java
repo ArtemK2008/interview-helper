@@ -72,7 +72,6 @@ public class AnswerControllerMvc {
         List<AnswerDto> answers = (List<AnswerDto>) request.getSession().getAttribute("answers");
         request.getSession().removeAttribute("answers");
         String lastQuestion = (String)request.getSession().getAttribute("lastQuestion");
-        System.out.println(lastQuestion);
         model.addAttribute("answers", answers);
         model.addAttribute("lastQuestion", lastQuestion);
         return "/answer/show-other-possible-card-answers";

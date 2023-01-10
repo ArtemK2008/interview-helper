@@ -12,6 +12,12 @@
         <td th:text="${answer.answerText}"></td>
     </tr>
 </table>
+
+<br>
+<form th:action="@{/back-to-profile-page}" th:object="${answers}" method="post">
+    <input type="hidden" th:value="${answers}" th:attr="name='answers'" >
+    <button type="submit">Back to profile </button>
+</form>
 <div th:replace="footer::footer"></div>
 </body>
 </html>
