@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Answers</title>
+</head>
+<body>
+
+<h1>Other Answers for this Question : </h1>
+
+<table style="border: solid">
+    <tr th:each="answer : ${answers}">
+        <td th:text="${answer.answerText}"></td>
+        <td>
+            <form th:action="@{/vote-for-answer}" th:object="${answer.answerText}" method="post">
+                <input type="hidden" th:value="${answer.answerText}" th:attr="name='answer'" >
+                <button type="submit">vote </button>
+            </form>
+        </td>
+        <td th:text="${answer.voiceCount}"></td>
+        <td>
+        <form th:action="@{/vote-for-answer-by-hundred}" th:object="${answer.answerText}" method="post">
+            <input type="hidden" th:value="${answer.answerText}" th:attr="name='answer'" >
+            <button type="submit">vote by 100 </button>
+        </form>
+        </td>
+    </tr>
+</table>
+<br>
+
+<form th:action="@{/propose-your-answer}" th:object="${lastQuestion}" method="post">
+    <input type="hidden" th:value="${lastQuestion}" th:attr="name='lastQuestion'">
+    <button type="submit">Propose your own answer </button>
+</form>
+
+<br>
+
+<form th:action="@{/display-answer-card}" th:object="${lastQuestion}" method="post">
+    <input type="hidden" th:value="${lastQuestion}" th:attr="name='questionValue'" >
+    <button type="submit">Back to Answers </button>
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

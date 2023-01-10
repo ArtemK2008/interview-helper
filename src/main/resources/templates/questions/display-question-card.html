@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Questions</title>
+</head>
+<body>
+<h1 style="text-align:center;">Question is  <span th:text ="${questionText}">question</span></h1>
+<br>
+<div>
+<form th:action="@{/mark-as-correct}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">Press if you answered correctly </button>
+</form>
+
+<form th:action="@{/mark-as-incorrect}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">Press if you answered wrong </button>
+</form>
+</div>
+
+<br>
+
+<form th:action="@{/display-answer-card}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">show answer </button>
+</form>
+
+<br>
+<div>
+<form th:action="@{/go-to-next-question}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">next </button>
+</form>
+
+<form th:action="@{/go-to-previous-question}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">previous </button>
+</form>
+</div>
+<br>
+
+<form th:action="@{/save-in-favourites}" th:object="${questionText}" method="post">
+    <input type="hidden" th:value="${questionText}" th:attr="name='questionValue'" >
+    <button type="submit">add question to favourites </button>
+</form>
+<br>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

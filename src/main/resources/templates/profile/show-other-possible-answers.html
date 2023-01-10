@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Answers</title>
+</head>
+<body>
+
+<h1>Other Answers for this Question : </h1>
+
+<table>
+    <tr th:each="answer : ${answers}">
+        <td th:text="${answer.answerText}"></td>
+    </tr>
+</table>
+
+<br>
+<form th:action="@{/back-to-profile-page}" th:object="${answers}" method="post">
+    <input type="hidden" th:value="${answers}" th:attr="name='answers'" >
+    <button type="submit">Back to profile </button>
+</form>
+<div th:replace="footer::footer"></div>
+</body>
+</html>

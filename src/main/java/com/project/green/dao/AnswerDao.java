@@ -15,8 +15,20 @@ public interface AnswerDao {
 
     Optional<Answer> getById(int id);
 
+    Optional<Answer> getByValue(String value);
+
+    Optional<Answer> getByQuestionId(int id);
+
     void deleteAnswer(int id);
 
     Answer saveAnswer(Answer answer);
+
+    void incrementVoiceCount(int id, int value);
+
+    int getAnswerVoiceCountById(int id);
+
+    boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,Answer answer);
+
+    void swapDefaultForNewOne(int questionId,Answer answer);
 
 }

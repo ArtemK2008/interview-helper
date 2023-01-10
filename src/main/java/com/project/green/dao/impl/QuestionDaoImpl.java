@@ -1,6 +1,7 @@
 package com.project.green.dao.impl;
 
 import com.project.green.dao.QuestionDao;
+import com.project.green.entities.Answer;
 import com.project.green.entities.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {
@@ -43,10 +45,11 @@ public class QuestionDaoImpl implements QuestionDao {
                 .getSingleResult());
     }
 
+    @Override
     public Optional<Question> getByValue(String value) {
         EntityGraph entityGraph = entityManager.getEntityGraph("question-entity-graph");
-        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = ?1", Question.class).
-                setParameter(1, value).setHint("javax.persistence.fetchgraph", entityGraph)
+        return Optional.ofNullable(entityManager.createQuery("select q from Question q where q.questionText = :value", Question.class).
+                setParameter("value", value).setHint("javax.persistence.fetchgraph", entityGraph)
                 .getSingleResult());
     }
 
@@ -72,5 +75,14 @@ public class QuestionDaoImpl implements QuestionDao {
                 .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getResultList());
     }
+
+    @Override
+    public void addAnswerToQuestion(int id, Answer answer) {
+        Question currQuestion = getById(id).get();
+        Set<Answer> answers = currQuestion.getAnswers();
+        answers.add(answer);
+        entityManager.merge(currQuestion);
+    }
+
 
 }

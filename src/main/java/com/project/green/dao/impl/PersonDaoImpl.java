@@ -2,13 +2,17 @@ package com.project.green.dao.impl;
 
 import com.project.green.dao.PersonDao;
 import com.project.green.entities.Person;
+import com.project.green.entities.Question;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class PersonDaoImpl implements PersonDao {
@@ -31,6 +35,7 @@ public class PersonDaoImpl implements PersonDao {
                 .getSingleResult());
     }
 
+
     @Override
     public Optional<Person> getPersonByEmail(String email) {
         EntityGraph entityGraph = entityManager.getEntityGraph("person-entity-graph");
@@ -41,6 +46,7 @@ public class PersonDaoImpl implements PersonDao {
 
         return Optional.of(currPerson);
     }
+
 
     @Override
     public void save(Person person) {
@@ -59,5 +65,38 @@ public class PersonDaoImpl implements PersonDao {
                 .setParameter("id", id)
                 .setHint("javax.persistence.fetchgraph", entityGraph)
                 .executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public Set<Question> getSavedQuestionsById(int id) {
+        return getPersonById(id).get().getSavedQuestions();
+    }
+
+    @Override
+    @Transactional
+    public boolean addQuestionToFavourites(int id, Question question) {
+        Person currPerson = getPersonById(id).get();
+        Set<Question> questionsSavedAsFavourites = currPerson.getSavedQuestions();
+        if (!checkIFQuestionExist(id, question)) {
+            questionsSavedAsFavourites.add(question);
+            List<Person> personsWhoSavedThis;
+            personsWhoSavedThis = question.getPersonsWhoSavedThis();
+            if(personsWhoSavedThis == null) {
+                personsWhoSavedThis = new ArrayList<>();
+            }
+            personsWhoSavedThis.add(currPerson);
+            question.setPersonsWhoSavedThis(personsWhoSavedThis);
+            currPerson.setSavedQuestions(questionsSavedAsFavourites);
+            entityManager.merge(question);
+            entityManager.merge(currPerson);
+            return  true;
+        }
+        return false;
+    }
+
+    private boolean checkIFQuestionExist(int id, Question question) {
+        Set<Question> questionsSavedAsFavourites = getSavedQuestionsById(id);
+        return questionsSavedAsFavourites.contains(question);
     }
 }

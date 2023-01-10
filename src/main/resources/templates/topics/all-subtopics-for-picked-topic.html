@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Topics</title>
+</head>
+<body>
+<h1>Choose a  Subtopic to see it's Questions</h1>
+
+
+<form action="#" method="POST"
+      th:action="@{/display-sub-topics-content}" th:object="${subTopics}">
+
+    <select name="topic" th:object="${subTopics}">
+        <option th:each="topic : ${subTopics}" th:value="${topic}"
+                th:name="${topic}" th:text="${topic}"></option>
+    </select> <input type="submit" value="display questions" />
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>No Answers found</title>
+</head>
+<body>
+<h1>Currently there is no answers</span></h1>
+<br>
+<br>
+
+<br>
+<form th:action="@{/back-to-profile-page}" th:object="${question}" method="post">
+    <input type="hidden" th:value="${question}" th:attr="name='question'" >
+    <button type="submit">Back to profile </button>
+</form>
+
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>

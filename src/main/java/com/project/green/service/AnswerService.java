@@ -14,7 +14,19 @@ public interface AnswerService {
 
     AnswerDto getById(int id);
 
-    List<AnswerDto> getAllAnswers();
+    public AnswerDto getByValue(String value);
+
+    AnswerDto getBestByQuestionId(int id);
+
+    List<AnswerDto> getAllExistingAnswers();
 
     List<AnswerDto> getAllAnswersToQuestionInOrderByVoice(int questionId);
+
+    void incrementVoiceCount(int id, int value);
+
+    int getAnswerVoiceCountById(int id);
+
+    boolean checkIfAnswersVoiceCountBiggerThenDefault(int questionId,AnswerDto answerDto);
+
+    void swapDefaultForNewOne(int questionId, AnswerDto answerDto);
 }

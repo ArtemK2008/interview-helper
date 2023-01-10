@@ -11,4 +11,11 @@
     <include file="sql/db.changelog-1.4.sql"/>
     <include file="sql/db.changelog-1.5.sql"/>
     <include file="sql/db.changelog-1.6.sql"/>
+    <include file="sql/db.changelog-1.7.sql"/>
+    <include file="sql/db.changelog-1.8.sql"/>
+    <include file="sql/db.changelog-1.10.sql"/>
+    <include file="sql/db.changelog-1.11.sql"/>
+    <include file="sql/db.changelog-1.12.sql"/>
+    <include file="sql/db.changelog-1.13.sql"/>
+    <include file="sql/db.changelog-1.14.sql"/>
 </databaseChangeLog>

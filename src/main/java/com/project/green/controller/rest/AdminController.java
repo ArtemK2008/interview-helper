@@ -65,7 +65,7 @@ public class AdminController {
 
     @GetMapping("/answer/all")
     public List<AnswerDto> getAllAnswers() {
-        return answerService.getAllAnswers();
+        return answerService.getAllExistingAnswers();
     }
 
     @PostMapping("/answer/create")

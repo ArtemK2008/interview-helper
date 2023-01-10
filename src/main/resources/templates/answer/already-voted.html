@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Denied</title>
+</head>
+<body>
+<h1>Only one vote for person!</h1>
+
+<br>
+<form th:action="@{/display-answer-card}" th:object="${lastQuestion}" method="post">
+    <input type="hidden" th:value="${lastQuestion}" th:attr="name='questionValue'" >
+    <button type="submit">Back to Answers </button>
+</form>
+
+<div th:replace="footer::footer"></div>
+</body>
+</html>
